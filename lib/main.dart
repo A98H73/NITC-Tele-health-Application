@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:nitc_telehealth_application/FrontEnd/Login_Page.dart';
-import 'package:nitc_telehealth_application/FrontEnd/Register_user_page.dart';
+import 'package:nitc_telehealth_application/FrontEnd/screens/Login_Page.dart';
+import 'package:nitc_telehealth_application/FrontEnd/screens/Register_user_page.dart';
 
 void main() {
   runApp(MyApp());
