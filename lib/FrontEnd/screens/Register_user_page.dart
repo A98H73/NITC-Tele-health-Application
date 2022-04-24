@@ -1,5 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:nitc_telehealth_application/FrontEnd/services/adduser.dart';
 import 'package:snippet_coder_utils/FormHelper.dart';
 import 'package:snippet_coder_utils/ProgressHUD.dart';
 import 'package:snippet_coder_utils/hex_color.dart';
@@ -15,12 +17,12 @@ class _RegisterUserState extends State<RegisterUser> {
   bool isAPICallProcess = false;
   bool hidePassword = true;
   GlobalKey<FormState> globalFormKey = GlobalKey<FormState>();
-  String? username;
-  String? password;
   String? name;
+  String? type;
   String? branch;
   String? rollno;
   String? email;
+  String? password;
 
   @override
   Widget build(BuildContext context) {
@@ -91,177 +93,330 @@ class _RegisterUserState extends State<RegisterUser> {
               ),
             ),
           ),
-          FormHelper.inputFieldWidget(
-            context,
-            "name",
-            "Name",
-            (onValidateVal) {
-              if (onValidateVal.isEmpty) {
-                return "Name can\'t be empty";
-              }
-              return null;
-            },
-            (onSavedVal) {
-              name = onSavedVal;
-            },
-            prefixIcon: const Icon(Icons.person),
-            borderFocusColor: Colors.white,
-            prefixIconColor: Colors.white,
-            borderColor: Colors.white,
-            textColor: Colors.white,
-            hintColor: Colors.white.withOpacity(0.7),
-            borderRadius: 10,
-            showPrefixIcon: true,
+          Padding(
+            padding: const EdgeInsets.only(
+              left: 20,
+              right: 20,
+            ),
+            child: TextFormField(
+              controller: TextEditingController(text: name),
+              onChanged: (value) {
+                name = value;
+              },
+              validator: (value) {
+                if (value == null) {
+                  return 'Field cannot be empty';
+                }
+              },
+              style: TextStyle(color: Colors.white),
+              decoration: InputDecoration(
+                hintText: "Enter Name",
+                hintStyle: TextStyle(color: Colors.white),
+                labelText: "Name",
+                labelStyle: TextStyle(color: Colors.white),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: const BorderRadius.all(Radius.circular(10.0)),
+                  borderSide: BorderSide(
+                    color: Colors.white,
+                  ),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                  borderSide: BorderSide(
+                    color: Colors.white,
+                  ),
+                ),
+                prefixIcon: Icon(
+                  Icons.person,
+                  color: Colors.white,
+                ),
+                prefixIconColor: Colors.white,
+              ),
+            ),
           ),
           SizedBox(
             height: 10,
-          ),
-          FormHelper.inputFieldWidget(
-            context,
-            "username",
-            "UserName",
-            (onValidateVal) {
-              if (onValidateVal.isEmpty) {
-                return "username can\'t be empty";
-              }
-              return null;
-            },
-            (onSavedVal) {
-              username = onSavedVal;
-            },
-            prefixIcon: const Icon(Icons.person),
-            borderFocusColor: Colors.white,
-            prefixIconColor: Colors.white,
-            borderColor: Colors.white,
-            textColor: Colors.white,
-            hintColor: Colors.white.withOpacity(0.7),
-            borderRadius: 10,
-            showPrefixIcon: true,
-          ),
-          SizedBox(
-            height: 10,
-          ),
-          FormHelper.inputFieldWidget(
-            context,
-            "branch",
-            "Branch",
-            (onValidateVal) {
-              if (onValidateVal.isEmpty) {
-                return "Branch name can\'t be empty";
-              }
-              return null;
-            },
-            (onSavedVal) {
-              branch = onSavedVal;
-            },
-            prefixIcon: const Icon(Icons.person),
-            borderFocusColor: Colors.white,
-            prefixIconColor: Colors.white,
-            borderColor: Colors.white,
-            textColor: Colors.white,
-            hintColor: Colors.white.withOpacity(0.7),
-            borderRadius: 10,
-            showPrefixIcon: true,
-          ),
-          SizedBox(
-            height: 10,
-          ),
-          FormHelper.inputFieldWidget(
-            context,
-            "rollno",
-            "Roll Number",
-            (onValidateVal) {
-              if (onValidateVal.isEmpty) {
-                return "Roll number can\'t be empty";
-              }
-              return null;
-            },
-            (onSavedVal) {
-              rollno = onSavedVal;
-            },
-            prefixIcon: const Icon(Icons.person),
-            borderFocusColor: Colors.white,
-            prefixIconColor: Colors.white,
-            borderColor: Colors.white,
-            textColor: Colors.white,
-            hintColor: Colors.white.withOpacity(0.7),
-            borderRadius: 10,
-            showPrefixIcon: true,
-          ),
-          SizedBox(
-            height: 10,
-          ),
-          FormHelper.inputFieldWidget(
-            context,
-            "email",
-            "Email",
-            (onValidateVal) {
-              if (onValidateVal.isEmpty) {
-                return "Email can\'t be empty";
-              } else if (RegExp(
-                      r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                  .hasMatch(onValidateVal)) {
-                return null;
-              }
-              return null;
-            },
-            (onSavedVal) {
-              email = onSavedVal;
-            },
-            prefixIcon: const Icon(Icons.person),
-            borderFocusColor: Colors.white,
-            prefixIconColor: Colors.white,
-            borderColor: Colors.white,
-            textColor: Colors.white,
-            hintColor: Colors.white.withOpacity(0.7),
-            borderRadius: 10,
-            showPrefixIcon: true,
           ),
           Padding(
             padding: const EdgeInsets.only(
-              top: 10,
+              left: 20,
+              right: 20,
             ),
-            child: FormHelper.inputFieldWidget(context, "password", "Password",
-                (onValidateVal) {
-              if (onValidateVal.isEmpty) {
-                return "Password can\'t be empty";
-              }
-              return null;
-            }, (onSavedVal) {
-              password = onSavedVal;
-            },
-                prefixIcon: const Icon(Icons.person),
-                borderFocusColor: Colors.white,
+            child: TextFormField(
+              controller: TextEditingController(text: type),
+              onChanged: (value) {
+                type = value;
+              },
+              validator: (value) {
+                if (value == null) {
+                  return 'Field cannot be empty';
+                }
+              },
+              style: TextStyle(color: Colors.white),
+              decoration: InputDecoration(
+                hintText: "Enter Type",
+                hintStyle: TextStyle(color: Colors.white),
+                labelText: "Type",
+                labelStyle: TextStyle(color: Colors.white),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: const BorderRadius.all(Radius.circular(10.0)),
+                  borderSide: BorderSide(
+                    color: Colors.white,
+                  ),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                  borderSide: BorderSide(
+                    color: Colors.white,
+                  ),
+                ),
+                prefixIcon: Icon(
+                  Icons.person,
+                  color: Colors.white,
+                ),
                 prefixIconColor: Colors.white,
-                borderColor: Colors.white,
-                textColor: Colors.white,
-                hintColor: Colors.white.withOpacity(0.7),
-                borderRadius: 10,
-                showPrefixIcon: true,
-                obscureText: hidePassword,
+              ),
+            ),
+          ),
+          SizedBox(
+            height: 10,
+          ),
+          Padding(
+            padding: const EdgeInsets.only(
+              left: 20,
+              right: 20,
+            ),
+            child: TextFormField(
+              controller: TextEditingController(text: branch),
+              onChanged: (value) {
+                branch = value;
+              },
+              validator: (value) {
+                if (value == null) {
+                  return 'Field cannot be empty';
+                }
+              },
+              style: TextStyle(color: Colors.white),
+              decoration: InputDecoration(
+                hintText: "Enter Branch",
+                hintStyle: TextStyle(color: Colors.white),
+                labelText: "Branch",
+                labelStyle: TextStyle(color: Colors.white),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: const BorderRadius.all(Radius.circular(10.0)),
+                  borderSide: BorderSide(
+                    color: Colors.white,
+                  ),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                  borderSide: BorderSide(
+                    color: Colors.white,
+                  ),
+                ),
+                prefixIcon: Icon(
+                  Icons.person,
+                  color: Colors.white,
+                ),
+                prefixIconColor: Colors.white,
+              ),
+            ),
+          ),
+          SizedBox(
+            height: 10,
+          ),
+          Padding(
+            padding: const EdgeInsets.only(
+              left: 20,
+              right: 20,
+            ),
+            child: TextFormField(
+              controller: TextEditingController(text: rollno),
+              onChanged: (value) {
+                rollno = value;
+              },
+              validator: (value) {
+                if (value == null) {
+                  return 'Field cannot be empty';
+                }
+              },
+              style: TextStyle(color: Colors.white),
+              decoration: InputDecoration(
+                hintText: "Enter Rollno",
+                hintStyle: TextStyle(color: Colors.white),
+                labelText: "Rollno",
+                labelStyle: TextStyle(color: Colors.white),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: const BorderRadius.all(Radius.circular(10.0)),
+                  borderSide: BorderSide(
+                    color: Colors.white,
+                  ),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                  borderSide: BorderSide(
+                    color: Colors.white.withOpacity(0.5),
+                  ),
+                ),
+                prefixIcon: Icon(
+                  Icons.person,
+                  color: Colors.white,
+                ),
+                prefixIconColor: Colors.white,
+              ),
+            ),
+          ),
+          SizedBox(
+            height: 10,
+          ),
+          Padding(
+            padding: const EdgeInsets.only(
+              left: 20,
+              right: 20,
+            ),
+            child: TextFormField(
+              controller: TextEditingController(text: email),
+              onChanged: (value) {
+                email = value;
+              },
+              validator: (value) {
+                if (value == null) {
+                  return 'Field cannot be empty';
+                } else if (RegExp(
+                        r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                    .hasMatch(value)) {
+                  return null;
+                } else {
+                  return 'Enter Valid Email';
+                }
+              },
+              style: TextStyle(color: Colors.white),
+              decoration: InputDecoration(
+                hintText: "Enter Email",
+                hintStyle: TextStyle(color: Colors.white),
+                labelText: "Email",
+                labelStyle: TextStyle(color: Colors.white),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: const BorderRadius.all(Radius.circular(10.0)),
+                  borderSide: BorderSide(
+                    color: Colors.white,
+                  ),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                  borderSide: BorderSide(
+                    color: Colors.white,
+                  ),
+                ),
+                prefixIcon: Icon(
+                  Icons.person,
+                  color: Colors.white,
+                ),
+                prefixIconColor: Colors.white,
+              ),
+            ),
+          ),
+          SizedBox(
+            height: 10,
+          ),
+          Padding(
+            padding: const EdgeInsets.only(
+              left: 20,
+              right: 20,
+            ),
+            child: TextFormField(
+              controller: TextEditingController(text: password),
+              onChanged: (value) {
+                password = value;
+              },
+              validator: (value) {
+                if (value == null) {
+                  return "Password can't be empty";
+                } else {
+                  return null;
+                }
+              },
+              obscureText: hidePassword,
+              style: TextStyle(color: Colors.white),
+              decoration: InputDecoration(
+                hintText: "Enter Password",
+                hintStyle: TextStyle(color: Colors.white),
+                labelText: "Password",
+                labelStyle: TextStyle(color: Colors.white),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                  borderSide: BorderSide(
+                    color: Colors.white,
+                  ),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: const BorderRadius.all(Radius.circular(10.0)),
+                  borderSide: BorderSide(
+                    color: Colors.white,
+                  ),
+                ),
+                prefixIcon: Icon(
+                  Icons.lock,
+                  color: Colors.white,
+                ),
                 suffixIcon: IconButton(
-                    onPressed: () {
-                      setState(() {
-                        hidePassword = !hidePassword;
-                      });
-                    },
+                  icon: Icon(
+                    hidePassword ? Icons.visibility_off : Icons.visibility,
                     color: Colors.white.withOpacity(0.7),
-                    icon: Icon(
-                      hidePassword ? Icons.visibility_off : Icons.visibility,
-                    ))),
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      hidePassword = !hidePassword;
+                    });
+                  },
+                ),
+              ),
+            ),
           ),
           SizedBox(
             height: 10,
           ),
           Center(
-            child: FormHelper.submitButton(
-              "Register",
-              () {},
-              btnColor: HexColor("#283B71"),
-              borderColor: Colors.white.withOpacity(0.7),
-              txtColor: Colors.white,
-              borderRadius: 10,
-            ),
+            child: ElevatedButton(
+                child: Text("REGISTER"),
+                onPressed: () {
+                  if (globalFormKey.currentState!.validate()) {
+                    //Navigator.pushNamed(context, MyRoutings.homeRoute);
+
+                    AddNewUser()
+                        .AddUser(name, type, branch, rollno, email, password)
+                        .then((val) {
+                      if (val.data['success']) {
+                        //token = val.data['token'];
+                        Fluttertoast.showToast(
+                          msg: 'New user Added Successfully',
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.BOTTOM,
+                          timeInSecForIosWeb: 1,
+                          backgroundColor: Colors.green,
+                          textColor: Colors.white,
+                          fontSize: 16.0,
+                        );
+                      }
+                    });
+                  } else {
+                    "problem signin- check";
+                  }
+                },
+                style: ElevatedButton.styleFrom(
+                    primary: HexColor("#283B71"),
+                    side: BorderSide(
+                      width: 1.0,
+                      color: Colors.white.withOpacity(0.7),
+                    ),
+                    shape: new RoundedRectangleBorder(
+                      borderRadius: new BorderRadius.circular(10.0),
+                    ),
+                    padding: EdgeInsets.symmetric(horizontal: 50, vertical: 20),
+                    textStyle: TextStyle(
+                      fontSize: 16,
+                      color: Colors.white,
+                    ))),
           ),
           SizedBox(
             height: 10,

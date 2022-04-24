@@ -175,21 +175,9 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ),
                 prefixIcon: Icon(
-                  Icons.password,
+                  Icons.lock,
                   color: Colors.white,
                 ),
-                // suffixIcon: IconButton(
-                //     onPressed: () {
-                //       setState(() {
-                //         hidePassword = !hidePassword;
-                //       });
-                //     },
-                //     color: Colors.white.withOpacity(0.7),
-                //     icon: Icon(
-                //       hidePassword ? Icons.visibility_off : Icons.visibility,
-                //     )
-                // )
-
                 suffixIcon: IconButton(
                   icon: Icon(
                     hidePassword ? Icons.visibility_off : Icons.visibility,
