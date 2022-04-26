@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:nitc_telehealth_application/FrontEnd/screens/Login_Page.dart';
+import 'package:nitc_telehealth_application/FrontEnd/screens/Register_admin_page.dart';
 import 'package:nitc_telehealth_application/FrontEnd/screens/Register_user_page.dart';
 
 void main() {
@@ -19,6 +20,7 @@ class MyApp extends StatelessWidget {
       routes: {
         '/': (context) => const LoginPage(),
         '/registeruser': (context) => const RegisterUser(),
+        '/registeradmin': (context) => const RegisterAdmin(),
       },
     );
   }

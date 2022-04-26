@@ -1,25 +1,28 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:nitc_telehealth_application/FrontEnd/services/authservice.dart';
+import 'package:nitc_telehealth_application/FrontEnd/services/adduser.dart';
 import 'package:snippet_coder_utils/FormHelper.dart';
 import 'package:snippet_coder_utils/ProgressHUD.dart';
 import 'package:snippet_coder_utils/hex_color.dart';
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({Key? key}) : super(key: key);
+class RegisterAdmin extends StatefulWidget {
+  const RegisterAdmin({Key? key}) : super(key: key);
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<RegisterAdmin> createState() => _RegisterAdminState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _RegisterAdminState extends State<RegisterAdmin> {
   bool isAPICallProcess = false;
   bool hidePassword = true;
   GlobalKey<FormState> globalFormKey = GlobalKey<FormState>();
+  String? name;
+  String? type;
+  String? college_id;
+  String? phone;
   String? email;
   String? password;
-  String? token;
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +32,7 @@ class _LoginPageState extends State<LoginPage> {
         body: ProgressHUD(
           child: Form(
             key: globalFormKey,
-            child: _loginUI(context),
+            child: _registerUI(context),
           ),
           inAsyncCall: isAPICallProcess,
           opacity: 0.3,
@@ -39,7 +42,7 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  Widget _loginUI(BuildContext context) {
+  Widget _registerUI(BuildContext context) {
     return SingleChildScrollView(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -82,13 +85,161 @@ class _LoginPageState extends State<LoginPage> {
               bottom: 30,
             ),
             child: Text(
-              "Login",
+              "Register Admin",
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 25,
                 color: Colors.white,
               ),
             ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(
+              left: 20,
+              right: 20,
+            ),
+            child: TextFormField(
+              controller: TextEditingController(text: name),
+              onChanged: (value) {
+                name = value;
+              },
+              validator: (value) {
+                if (value == null) {
+                  return 'Field cannot be empty';
+                }
+              },
+              style: TextStyle(color: Colors.white),
+              decoration: InputDecoration(
+                labelText: "Name",
+                labelStyle: TextStyle(color: Colors.white),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: const BorderRadius.all(Radius.circular(10.0)),
+                  borderSide: BorderSide(
+                    color: Colors.white,
+                  ),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                  borderSide: BorderSide(
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ),
+          ),
+          SizedBox(
+            height: 10,
+          ),
+          Padding(
+            padding: const EdgeInsets.only(
+              left: 20,
+              right: 20,
+            ),
+            child: TextFormField(
+              controller: TextEditingController(text: type),
+              onChanged: (value) {
+                type = value;
+              },
+              validator: (value) {
+                if (value == null) {
+                  return 'Field cannot be empty';
+                }
+              },
+              style: TextStyle(color: Colors.white),
+              decoration: InputDecoration(
+                labelText: "Type",
+                labelStyle: TextStyle(color: Colors.white),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: const BorderRadius.all(Radius.circular(10.0)),
+                  borderSide: BorderSide(
+                    color: Colors.white,
+                  ),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                  borderSide: BorderSide(
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ),
+          ),
+          SizedBox(
+            height: 10,
+          ),
+          Padding(
+            padding: const EdgeInsets.only(
+              left: 20,
+              right: 20,
+            ),
+            child: TextFormField(
+              controller: TextEditingController(text: college_id),
+              onChanged: (value) {
+                college_id = value;
+              },
+              validator: (value) {
+                if (value == null) {
+                  return 'Field cannot be empty';
+                }
+              },
+              style: TextStyle(color: Colors.white),
+              decoration: InputDecoration(
+                labelText: "College_ID",
+                labelStyle: TextStyle(color: Colors.white),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: const BorderRadius.all(Radius.circular(10.0)),
+                  borderSide: BorderSide(
+                    color: Colors.white,
+                  ),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                  borderSide: BorderSide(
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ),
+          ),
+          SizedBox(
+            height: 10,
+          ),
+          Padding(
+            padding: const EdgeInsets.only(
+              left: 20,
+              right: 20,
+            ),
+            child: TextFormField(
+              controller: TextEditingController(text: phone),
+              onChanged: (value) {
+                phone = value;
+              },
+              validator: (value) {
+                if (value == null) {
+                  return 'Field cannot be empty';
+                }
+              },
+              style: TextStyle(color: Colors.white),
+              decoration: InputDecoration(
+                labelText: "Phone No.",
+                labelStyle: TextStyle(color: Colors.white),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: const BorderRadius.all(Radius.circular(10.0)),
+                  borderSide: BorderSide(
+                    color: Colors.white,
+                  ),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                  borderSide: BorderSide(
+                    color: Colors.white.withOpacity(0.5),
+                  ),
+                ),
+              ),
+            ),
+          ),
+          SizedBox(
+            height: 10,
           ),
           Padding(
             padding: const EdgeInsets.only(
@@ -113,9 +264,7 @@ class _LoginPageState extends State<LoginPage> {
               },
               style: TextStyle(color: Colors.white),
               decoration: InputDecoration(
-                hintText: "Enter Username",
-                hintStyle: TextStyle(color: Colors.white),
-                labelText: "Username",
+                labelText: "Email",
                 labelStyle: TextStyle(color: Colors.white),
                 enabledBorder: OutlineInputBorder(
                   borderRadius: const BorderRadius.all(Radius.circular(10.0)),
@@ -129,19 +278,16 @@ class _LoginPageState extends State<LoginPage> {
                     color: Colors.white,
                   ),
                 ),
-                prefixIcon: Icon(
-                  Icons.person,
-                  color: Colors.white,
-                ),
-                prefixIconColor: Colors.white,
               ),
             ),
+          ),
+          SizedBox(
+            height: 10,
           ),
           Padding(
             padding: const EdgeInsets.only(
               left: 20,
               right: 20,
-              top: 30,
             ),
             child: TextFormField(
               controller: TextEditingController(text: password),
@@ -158,8 +304,6 @@ class _LoginPageState extends State<LoginPage> {
               obscureText: hidePassword,
               style: TextStyle(color: Colors.white),
               decoration: InputDecoration(
-                hintText: "Enter Password",
-                hintStyle: TextStyle(color: Colors.white),
                 labelText: "Password",
                 labelStyle: TextStyle(color: Colors.white),
                 focusedBorder: OutlineInputBorder(
@@ -192,68 +336,24 @@ class _LoginPageState extends State<LoginPage> {
               ),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.only(
-              top: 15,
-              right: 20,
-            ),
-            child: Align(
-              alignment: Alignment.bottomRight,
-              child: RichText(
-                text: TextSpan(
-                  style: const TextStyle(
-                    color: Colors.grey,
-                    fontSize: 14,
-                  ),
-                  children: <TextSpan>[
-                    TextSpan(
-                      text: "Forgot Password ?",
-                      style: TextStyle(
-                        color: Colors.white,
-                        decoration: TextDecoration.underline,
-                      ),
-                      recognizer: TapGestureRecognizer()
-                        ..onTap = () {
-                          print("Forgot Password");
-                        },
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
           SizedBox(
-            height: 20,
+            height: 10,
           ),
           Center(
             child: ElevatedButton(
-                child: Text("LOGIN"),
+                child: Text("REGISTER"),
                 onPressed: () {
                   if (globalFormKey.currentState!.validate()) {
                     //Navigator.pushNamed(context, MyRoutings.homeRoute);
-                    Fluttertoast.showToast(
-                      msg: email.toString(),
-                      toastLength: Toast.LENGTH_SHORT,
-                      gravity: ToastGravity.BOTTOM,
-                      timeInSecForIosWeb: 1,
-                      backgroundColor: Colors.green,
-                      textColor: Colors.white,
-                      fontSize: 16.0,
-                    );
-                    Fluttertoast.showToast(
-                      msg: password.toString(),
-                      toastLength: Toast.LENGTH_SHORT,
-                      gravity: ToastGravity.BOTTOM,
-                      timeInSecForIosWeb: 1,
-                      backgroundColor: Colors.blue,
-                      textColor: Colors.white,
-                      fontSize: 16.0,
-                    );
-                    AuthService().login(email, password).then((val) {
+
+                    AddNewUser()
+                        .AddAdmin(
+                            name, type, college_id, phone, email, password)
+                        .then((val) {
                       if (val.data['success']) {
-                        token = val.data['token'];
+                        //token = val.data['token'];
                         Fluttertoast.showToast(
-                          msg: 'Authenticated',
+                          msg: 'New user Added Successfully',
                           toastLength: Toast.LENGTH_SHORT,
                           gravity: ToastGravity.BOTTOM,
                           timeInSecForIosWeb: 1,
@@ -298,30 +398,35 @@ class _LoginPageState extends State<LoginPage> {
           SizedBox(
             height: 10,
           ),
-          Align(
-            alignment: Alignment.center,
-            child: RichText(
-              text: TextSpan(
-                style: const TextStyle(
-                  color: Colors.grey,
-                  fontSize: 14,
-                ),
-                children: <TextSpan>[
-                  TextSpan(
-                    text: "Don\'t have an account?",
+          Padding(
+            padding: const EdgeInsets.only(
+              bottom: 80,
+            ),
+            child: Align(
+              alignment: Alignment.center,
+              child: RichText(
+                text: TextSpan(
+                  style: const TextStyle(
+                    color: Colors.grey,
+                    fontSize: 14,
                   ),
-                  TextSpan(
-                    text: " SignUp",
-                    style: TextStyle(
-                      color: Colors.white,
-                      decoration: TextDecoration.underline,
+                  children: <TextSpan>[
+                    TextSpan(
+                      text: "Login to the application?",
                     ),
-                    recognizer: TapGestureRecognizer()
-                      ..onTap = () {
-                        Navigator.pushNamed(context, "/registeradmin");
-                      },
-                  ),
-                ],
+                    TextSpan(
+                      text: " LOGIN",
+                      style: TextStyle(
+                        color: Colors.white,
+                        decoration: TextDecoration.underline,
+                      ),
+                      recognizer: TapGestureRecognizer()
+                        ..onTap = () {
+                          Navigator.pushNamed(context, "/");
+                        },
+                    ),
+                  ],
+                ),
               ),
             ),
           ),

@@ -30,4 +30,8 @@ class AddNewUser {
       );
     }
   }
+
+  AddAdmin(name, type, college_id, phone, email, password) async {
+    
+  }
 }
