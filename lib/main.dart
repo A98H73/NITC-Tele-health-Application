@@ -1,9 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:nitc_telehealth_application/FrontEnd/screens/Login_Page.dart';
+import 'package:nitc_telehealth_application/FrontEnd/screens/RegisterUsers.dart';
 import 'package:nitc_telehealth_application/FrontEnd/screens/Register_admin_page.dart';
+import 'package:nitc_telehealth_application/FrontEnd/screens/Register_doctor_page.dart';
 import 'package:nitc_telehealth_application/FrontEnd/screens/Register_user_page.dart';
+import 'package:nitc_telehealth_application/FrontEnd/screens/delete_admin.dart';
+import 'package:nitc_telehealth_application/FrontEnd/screens/delete_doctor.dart';
+import 'package:nitc_telehealth_application/FrontEnd/screens/delete_user.dart';
+import 'FrontEnd/screens/RegisterUsers.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setPreferredOrientations(
+      [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
+
   runApp(MyApp());
 }
 
@@ -13,14 +24,20 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Flutter Demo App',
       theme: ThemeData(
         primaryColor: Colors.lightBlue[800],
       ),
       routes: {
-        '/': (context) => const LoginPage(),
+        // '/': (context) => const LoginPage(),
         '/registeruser': (context) => const RegisterUser(),
+        '/registerdoctor': (context) => const RegisterDoctor(),
         '/registeradmin': (context) => const RegisterAdmin(),
+        '/': (context) => const RegisterUsersPage(),
+        '/deleteuser': (context) => DeleteUser(),
+        '/deleteadmin': (context) => DeleteAdmin(),
+        '/deletedoctor': (context) => DeleteDoctor(),
       },
     );
   }

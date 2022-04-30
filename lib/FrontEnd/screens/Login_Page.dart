@@ -19,7 +19,17 @@ class _LoginPageState extends State<LoginPage> {
   GlobalKey<FormState> globalFormKey = GlobalKey<FormState>();
   String? email;
   String? password;
+  String? type;
   String? token;
+
+  List<DropdownMenuItem<String>> get dropdownItems {
+    List<DropdownMenuItem<String>> menuItems = [
+      DropdownMenuItem(child: Text("User"), value: "user"),
+      DropdownMenuItem(child: Text("Admin"), value: "admin"),
+      DropdownMenuItem(child: Text("Doctor"), value: "doctor"),
+    ];
+    return menuItems;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -113,8 +123,6 @@ class _LoginPageState extends State<LoginPage> {
               },
               style: TextStyle(color: Colors.white),
               decoration: InputDecoration(
-                hintText: "Enter Username",
-                hintStyle: TextStyle(color: Colors.white),
                 labelText: "Username",
                 labelStyle: TextStyle(color: Colors.white),
                 enabledBorder: OutlineInputBorder(
@@ -143,6 +151,40 @@ class _LoginPageState extends State<LoginPage> {
               right: 20,
               top: 30,
             ),
+            child: DropdownButtonFormField(
+              items: dropdownItems,
+              value: type,
+              onChanged: (String? newValue) {
+                setState(() {
+                  type = newValue!;
+                });
+              },
+              dropdownColor: HexColor('#283B71'),
+              style: TextStyle(
+                color: Colors.white,
+              ),
+              decoration: InputDecoration(
+                labelText: "Select Type",
+                labelStyle: TextStyle(color: Colors.white),
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.white),
+                  borderRadius: BorderRadius.circular(10.0),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.white),
+                  borderRadius: BorderRadius.circular(10.0),
+                ),
+                filled: true,
+                //fillColor: Colors.blueAccent,
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(
+              left: 20,
+              right: 20,
+              top: 30,
+            ),
             child: TextFormField(
               controller: TextEditingController(text: password),
               onChanged: (value) {
@@ -158,8 +200,6 @@ class _LoginPageState extends State<LoginPage> {
               obscureText: hidePassword,
               style: TextStyle(color: Colors.white),
               decoration: InputDecoration(
-                hintText: "Enter Password",
-                hintStyle: TextStyle(color: Colors.white),
                 labelText: "Password",
                 labelStyle: TextStyle(color: Colors.white),
                 focusedBorder: OutlineInputBorder(
@@ -231,38 +271,79 @@ class _LoginPageState extends State<LoginPage> {
                 onPressed: () {
                   if (globalFormKey.currentState!.validate()) {
                     //Navigator.pushNamed(context, MyRoutings.homeRoute);
-                    Fluttertoast.showToast(
-                      msg: email.toString(),
-                      toastLength: Toast.LENGTH_SHORT,
-                      gravity: ToastGravity.BOTTOM,
-                      timeInSecForIosWeb: 1,
-                      backgroundColor: Colors.green,
-                      textColor: Colors.white,
-                      fontSize: 16.0,
-                    );
-                    Fluttertoast.showToast(
-                      msg: password.toString(),
-                      toastLength: Toast.LENGTH_SHORT,
-                      gravity: ToastGravity.BOTTOM,
-                      timeInSecForIosWeb: 1,
-                      backgroundColor: Colors.blue,
-                      textColor: Colors.white,
-                      fontSize: 16.0,
-                    );
-                    AuthService().login(email, password).then((val) {
-                      if (val.data['success']) {
-                        token = val.data['token'];
-                        Fluttertoast.showToast(
-                          msg: 'Authenticated',
-                          toastLength: Toast.LENGTH_SHORT,
-                          gravity: ToastGravity.BOTTOM,
-                          timeInSecForIosWeb: 1,
-                          backgroundColor: Colors.green,
-                          textColor: Colors.white,
-                          fontSize: 16.0,
-                        );
-                      }
-                    });
+                    // Fluttertoast.showToast(
+                    //   msg: email.toString(),
+                    //   toastLength: Toast.LENGTH_SHORT,
+                    //   gravity: ToastGravity.BOTTOM,
+                    //   timeInSecForIosWeb: 1,
+                    //   backgroundColor: Colors.green,
+                    //   textColor: Colors.white,
+                    //   fontSize: 16.0,
+                    // );
+                    // Fluttertoast.showToast(
+                    //   msg: password.toString(),
+                    //   toastLength: Toast.LENGTH_SHORT,
+                    //   gravity: ToastGravity.BOTTOM,
+                    //   timeInSecForIosWeb: 1,
+                    //   backgroundColor: Colors.blue,
+                    //   textColor: Colors.white,
+                    //   fontSize: 16.0,
+                    // );
+                    // Fluttertoast.showToast(
+                    //   msg: type.toString(),
+                    //   toastLength: Toast.LENGTH_SHORT,
+                    //   gravity: ToastGravity.BOTTOM,
+                    //   timeInSecForIosWeb: 1,
+                    //   backgroundColor: Colors.blue,
+                    //   textColor: Colors.white,
+                    //   fontSize: 16.0,
+                    // );
+                    if (type == "user") {
+                      AuthService().loginUser(email, password).then((val) {
+                        if (val.data['success']) {
+                          token = val.data['token'];
+                          Fluttertoast.showToast(
+                            msg: 'Authenticated',
+                            toastLength: Toast.LENGTH_SHORT,
+                            gravity: ToastGravity.BOTTOM,
+                            timeInSecForIosWeb: 1,
+                            backgroundColor: Colors.green,
+                            textColor: Colors.white,
+                            fontSize: 16.0,
+                          );
+                        }
+                      });
+                    } else if (type == "admin") {
+                      AuthService().loginAdmin(email, password).then((val) {
+                        if (val.data['success']) {
+                          token = val.data['token'];
+                          Fluttertoast.showToast(
+                            msg: 'Authenticated',
+                            toastLength: Toast.LENGTH_SHORT,
+                            gravity: ToastGravity.BOTTOM,
+                            timeInSecForIosWeb: 1,
+                            backgroundColor: Colors.green,
+                            textColor: Colors.white,
+                            fontSize: 16.0,
+                          );
+                        }
+                      });
+                    } else if (type == "doctor") {
+                      AuthService().loginDoctor(email, password).then((val) {
+                        if (val.data['success']) {
+                          token = val.data['token'];
+                          Fluttertoast.showToast(
+                            msg: 'Authenticated',
+                            toastLength: Toast.LENGTH_SHORT,
+                            gravity: ToastGravity.BOTTOM,
+                            timeInSecForIosWeb: 1,
+                            backgroundColor: Colors.green,
+                            textColor: Colors.white,
+                            fontSize: 16.0,
+                          );
+                        }
+                      });
+                    }
                   } else {
                     "problem signin- check";
                   }
