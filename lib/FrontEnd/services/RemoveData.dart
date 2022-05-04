@@ -53,6 +53,102 @@ class RemoveUser {
   }
 }
 
+class RemoveAdmin {
+  Dio dio = new Dio();
+
+  DeleteAdmin(email) async {
+    try {
+      final response = await dio.delete(
+          'https://nitc-tele-health-app.herokuapp.com/deleteadmin/$email');
+
+      if (response.statusCode == 200) {
+        return response;
+      } else {
+        throw Exception('Failed to delete Data');
+      }
+    } on DioError catch (e) {
+      Fluttertoast.showToast(
+        msg: e.response?.data['msg'],
+        toastLength: Toast.LENGTH_SHORT,
+        timeInSecForIosWeb: 4,
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        fontSize: 16.0,
+      );
+    }
+  }
+
+  getAdminData(email) async {
+    try {
+      return await dio.post(
+          'https://nitc-tele-health-app.herokuapp.com/fetchadmin/',
+          data: {
+            "email": email,
+          },
+          options: Options(contentType: Headers.formUrlEncodedContentType));
+    } on DioError catch (e) {
+      Fluttertoast.showToast(
+        msg: e.response?.data['msg'],
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        fontSize: 16.0,
+      );
+    }
+  }
+}
+
+class RemoveDoc {
+  Dio dio = new Dio();
+
+  DeleteDoc(email) async {
+    try {
+      final response = await dio.delete(
+          'https://nitc-tele-health-app.herokuapp.com/deletedoc/$email');
+
+      if (response.statusCode == 200) {
+        return response;
+      } else {
+        throw Exception('Failed to delete Data');
+      }
+    } on DioError catch (e) {
+      Fluttertoast.showToast(
+        msg: e.response?.data['msg'],
+        toastLength: Toast.LENGTH_SHORT,
+        timeInSecForIosWeb: 4,
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        fontSize: 16.0,
+      );
+    }
+  }
+
+  getDocData(email) async {
+    try {
+      return await dio.post(
+          'https://nitc-tele-health-app.herokuapp.com/fetchdoc/',
+          data: {
+            "email": email,
+          },
+          options: Options(contentType: Headers.formUrlEncodedContentType));
+    } on DioError catch (e) {
+      Fluttertoast.showToast(
+        msg: e.response?.data['msg'],
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        fontSize: 16.0,
+      );
+    }
+  }
+}
+
+
+
 // class Rmdata {
 //   bool? success;
 //   String? msg;

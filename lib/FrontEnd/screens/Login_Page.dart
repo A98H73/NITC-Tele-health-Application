@@ -123,7 +123,7 @@ class _LoginPageState extends State<LoginPage> {
               },
               style: TextStyle(color: Colors.white),
               decoration: InputDecoration(
-                labelText: "Username",
+                labelText: "Email",
                 labelStyle: TextStyle(color: Colors.white),
                 enabledBorder: OutlineInputBorder(
                   borderRadius: const BorderRadius.all(Radius.circular(10.0)),
@@ -271,33 +271,7 @@ class _LoginPageState extends State<LoginPage> {
                 onPressed: () {
                   if (globalFormKey.currentState!.validate()) {
                     //Navigator.pushNamed(context, MyRoutings.homeRoute);
-                    // Fluttertoast.showToast(
-                    //   msg: email.toString(),
-                    //   toastLength: Toast.LENGTH_SHORT,
-                    //   gravity: ToastGravity.BOTTOM,
-                    //   timeInSecForIosWeb: 1,
-                    //   backgroundColor: Colors.green,
-                    //   textColor: Colors.white,
-                    //   fontSize: 16.0,
-                    // );
-                    // Fluttertoast.showToast(
-                    //   msg: password.toString(),
-                    //   toastLength: Toast.LENGTH_SHORT,
-                    //   gravity: ToastGravity.BOTTOM,
-                    //   timeInSecForIosWeb: 1,
-                    //   backgroundColor: Colors.blue,
-                    //   textColor: Colors.white,
-                    //   fontSize: 16.0,
-                    // );
-                    // Fluttertoast.showToast(
-                    //   msg: type.toString(),
-                    //   toastLength: Toast.LENGTH_SHORT,
-                    //   gravity: ToastGravity.BOTTOM,
-                    //   timeInSecForIosWeb: 1,
-                    //   backgroundColor: Colors.blue,
-                    //   textColor: Colors.white,
-                    //   fontSize: 16.0,
-                    // );
+
                     if (type == "user") {
                       AuthService().loginUser(email, password).then((val) {
                         if (val.data['success']) {

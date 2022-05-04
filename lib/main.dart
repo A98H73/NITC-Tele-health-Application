@@ -5,6 +5,7 @@ import 'package:nitc_telehealth_application/FrontEnd/screens/RegisterUsers.dart'
 import 'package:nitc_telehealth_application/FrontEnd/screens/Register_admin_page.dart';
 import 'package:nitc_telehealth_application/FrontEnd/screens/Register_doctor_page.dart';
 import 'package:nitc_telehealth_application/FrontEnd/screens/Register_user_page.dart';
+import 'package:nitc_telehealth_application/FrontEnd/screens/Schedule.dart';
 import 'package:nitc_telehealth_application/FrontEnd/screens/delete_admin.dart';
 import 'package:nitc_telehealth_application/FrontEnd/screens/delete_doctor.dart';
 import 'package:nitc_telehealth_application/FrontEnd/screens/delete_user.dart';
@@ -34,10 +35,11 @@ class MyApp extends StatelessWidget {
         '/registeruser': (context) => const RegisterUser(),
         '/registerdoctor': (context) => const RegisterDoctor(),
         '/registeradmin': (context) => const RegisterAdmin(),
-        '/': (context) => const RegisterUsersPage(),
-        '/deleteuser': (context) => DeleteUser(),
-        '/deleteadmin': (context) => DeleteAdmin(),
-        '/deletedoctor': (context) => DeleteDoctor(),
+        '/register': (context) => const RegisterUsersPage(),
+        '/deleteuser': (context) => const DeleteUser(),
+        '/deleteadmin': (context) => const DeleteAdmin(),
+        '/deletedoctor': (context) => const DeleteDoctor(),
+        '/': (context) => const CreateSchedule(),
       },
     );
   }
