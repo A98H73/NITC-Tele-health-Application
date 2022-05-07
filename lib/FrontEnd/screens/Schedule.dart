@@ -205,23 +205,24 @@ class _CreateScheduleState extends State<CreateSchedule> {
               ],
             ),
           ),
+          // Padding(
+          //   padding: const EdgeInsets.only(
+          //     top: 20,
+          //     left: 85,
+          //     bottom: 30,
+          //   ),
+          //   child: Text(
+          //     "Create Schedule",
+          //     style: TextStyle(
+          //       fontWeight: FontWeight.bold,
+          //       fontSize: 25,
+          //       color: Colors.white,
+          //     ),
+          //   ),
+          // ),
           Padding(
             padding: const EdgeInsets.only(
-              top: 20,
-              left: 85,
-              bottom: 30,
-            ),
-            child: Text(
-              "Create Schedule",
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 25,
-                color: Colors.white,
-              ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(
+              top: 50,
               left: 20,
               right: 20,
             ),
@@ -521,8 +522,7 @@ class _CreateScheduleState extends State<CreateSchedule> {
                           textColor: Colors.white,
                           fontSize: 16.0,
                         );
-                        Navigator.pushNamed(context, "/");
-                        
+                        Navigator.pushNamed(context, "/schedule");
                       }
                     });
                   } else {

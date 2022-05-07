@@ -285,6 +285,7 @@ class _LoginPageState extends State<LoginPage> {
                             textColor: Colors.white,
                             fontSize: 16.0,
                           );
+                          Navigator.pushNamed(context, "/appointment");
                         }
                       });
                     } else if (type == "admin") {
@@ -300,6 +301,7 @@ class _LoginPageState extends State<LoginPage> {
                             textColor: Colors.white,
                             fontSize: 16.0,
                           );
+                          Navigator.pushNamed(context, "/register");
                         }
                       });
                     } else if (type == "doctor") {
@@ -340,46 +342,46 @@ class _LoginPageState extends State<LoginPage> {
           SizedBox(
             height: 10,
           ),
-          Center(
-            child: Text(
-              "OR",
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
-                fontSize: 18,
-              ),
-            ),
-          ),
+          // Center(
+          //   child: Text(
+          //     "OR",
+          //     style: TextStyle(
+          //       fontWeight: FontWeight.bold,
+          //       color: Colors.white,
+          //       fontSize: 18,
+          //     ),
+          //   ),
+          // ),
           SizedBox(
             height: 10,
           ),
-          Align(
-            alignment: Alignment.center,
-            child: RichText(
-              text: TextSpan(
-                style: const TextStyle(
-                  color: Colors.grey,
-                  fontSize: 14,
-                ),
-                children: <TextSpan>[
-                  TextSpan(
-                    text: "Don\'t have an account?",
-                  ),
-                  TextSpan(
-                    text: " SignUp",
-                    style: TextStyle(
-                      color: Colors.white,
-                      decoration: TextDecoration.underline,
-                    ),
-                    recognizer: TapGestureRecognizer()
-                      ..onTap = () {
-                        Navigator.pushNamed(context, "/registeradmin");
-                      },
-                  ),
-                ],
-              ),
-            ),
-          ),
+          // Align(
+          //   alignment: Alignment.center,
+          //   child: RichText(
+          //     text: TextSpan(
+          //       style: const TextStyle(
+          //         color: Colors.grey,
+          //         fontSize: 14,
+          //       ),
+          //       children: <TextSpan>[
+          //         TextSpan(
+          //           text: "Don\'t have an account?",
+          //         ),
+          //         TextSpan(
+          //           text: " SignUp",
+          //           style: TextStyle(
+          //             color: Colors.white,
+          //             decoration: TextDecoration.underline,
+          //           ),
+          //           recognizer: TapGestureRecognizer()
+          //             ..onTap = () {
+          //               Navigator.pushNamed(context, "/registeradmin");
+          //             },
+          //         ),
+          //       ],
+          //     ),
+          //   ),
+          // ),
         ],
       ),
     );

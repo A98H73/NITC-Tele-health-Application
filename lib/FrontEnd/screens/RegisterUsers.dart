@@ -14,7 +14,41 @@ class _RegisterUsersPageState extends State<RegisterUsersPage> {
     return SafeArea(
         child: Scaffold(
       backgroundColor: HexColor('#283B71'),
-      drawer: Drawer(),
+      drawer: Drawer(
+        child: ListView(
+          // Important: Remove any padding from the ListView.
+          padding: EdgeInsets.zero,
+          children: [
+            const DrawerHeader(
+              decoration: BoxDecoration(
+                color: Color.fromARGB(255, 0, 34, 62),
+              ),
+              child: Text(
+                'Drawer Header',
+                style: TextStyle(color: Colors.white),
+              ),
+            ),
+            ListTile(
+              title: const Text('Create Schedule'),
+              onTap: () {
+                Navigator.pushNamed(context, "/schedule");
+              },
+            ),
+            ListTile(
+              title: const Text('Print Medical Certificate'),
+              onTap: () {
+                Navigator.pushNamed(context, "/printcerti");
+              },
+            ),
+            ListTile(
+              title: const Text('Sign Out'),
+              onTap: () {
+                Navigator.pushNamed(context, "/registeruser");
+              },
+            ),
+          ],
+        ),
+      ),
       appBar: AppBar(
         backgroundColor: HexColor('#283B71'),
         title: Text(

@@ -385,51 +385,51 @@ class _RegisterAdminState extends State<RegisterAdmin> {
           SizedBox(
             height: 10,
           ),
-          Center(
-            child: Text(
-              "OR",
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
-                fontSize: 18,
-              ),
-            ),
-          ),
+          // Center(
+          //   child: Text(
+          //     "OR",
+          //     style: TextStyle(
+          //       fontWeight: FontWeight.bold,
+          //       color: Colors.white,
+          //       fontSize: 18,
+          //     ),
+          //   ),
+          // ),
           SizedBox(
             height: 10,
           ),
-          Padding(
-            padding: const EdgeInsets.only(
-              bottom: 80,
-            ),
-            child: Align(
-              alignment: Alignment.center,
-              child: RichText(
-                text: TextSpan(
-                  style: const TextStyle(
-                    color: Colors.grey,
-                    fontSize: 14,
-                  ),
-                  children: <TextSpan>[
-                    TextSpan(
-                      text: "Login to the application?",
-                    ),
-                    TextSpan(
-                      text: " LOGIN",
-                      style: TextStyle(
-                        color: Colors.white,
-                        decoration: TextDecoration.underline,
-                      ),
-                      recognizer: TapGestureRecognizer()
-                        ..onTap = () {
-                          Navigator.pushNamed(context, "/");
-                        },
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
+          // Padding(
+          //   padding: const EdgeInsets.only(
+          //     bottom: 80,
+          //   ),
+          //   child: Align(
+          //     alignment: Alignment.center,
+          //     child: RichText(
+          //       text: TextSpan(
+          //         style: const TextStyle(
+          //           color: Colors.grey,
+          //           fontSize: 14,
+          //         ),
+          //         children: <TextSpan>[
+          //           TextSpan(
+          //             text: "Login to the application?",
+          //           ),
+          //           TextSpan(
+          //             text: " LOGIN",
+          //             style: TextStyle(
+          //               color: Colors.white,
+          //               decoration: TextDecoration.underline,
+          //             ),
+          //             recognizer: TapGestureRecognizer()
+          //               ..onTap = () {
+          //                 Navigator.pushNamed(context, "/");
+          //               },
+          //           ),
+          //         ],
+          //       ),
+          //     ),
+          //   ),
+          // ),
         ],
       ),
     );
