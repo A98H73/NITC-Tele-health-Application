@@ -32,7 +32,12 @@ class _BookAppNowState extends State<BookAppNow> {
   String? user_email;
   String? slot;
   String? date;
+  bool? appointment_book = false;
+  Color bgcolor = Colors.white;
   String? description;
+  bool _selectSlotValue = false;
+  String? book_StartTime;
+  String? book_EndTime;
 
   Future<List<UserValue>>? _futureData;
 
@@ -327,7 +332,7 @@ class _BookAppNowState extends State<BookAppNow> {
             ),
             child: Container(
               width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height / 4,
+              height: MediaQuery.of(context).size.height / 2,
               child: FutureBuilder(
                 future: _futureData,
                 builder: (BuildContext context, AsyncSnapshot snapshot) {
@@ -338,14 +343,93 @@ class _BookAppNowState extends State<BookAppNow> {
                       ),
                     );
                   } else {
-                    return ListView.builder(
-                      itemCount: snapshot.data.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        return ListTile(
-                          title: Text(snapshot.data[index].doc_name),
-                        );
-                      },
-                    );
+                    if (snapshot.data.length > 0) {
+                      return ListView.builder(
+                        itemCount: snapshot.data.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          return Card(
+                            elevation: 5,
+                            child: ListTile(
+                              title: Center(
+                                child: Text(
+                                  "${snapshot.data[index].doc_name}",
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                              subtitle: Column(
+                                children: <Widget>[
+                                  Text(
+                                    "Date: ${snapshot.data[index].date}",
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  Text(
+                                    "Slot: ${snapshot.data[index].slot}",
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  Text(
+                                    "Timing: ${snapshot.data[index].start_time} - ${snapshot.data[index].end_time}",
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  Text(
+                                    "Specilist In: ${snapshot.data[index].doc_spec_in}",
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  Text(
+                                    "Booking type: ${snapshot.data[index].app_booked}",
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              //tileColor: bgcolor,
+                              onTap: () {
+                                if (snapshot.data[index].app_booked == false) {
+                                  book_StartTime =
+                                      snapshot.data[index].start_time;
+                                  book_EndTime = snapshot.data[index].end_time;
+                                  print(book_StartTime);
+                                  print(book_EndTime);
+                                  setState(() {
+                                    _selectSlotValue = true;
+                                  });
+                                } else {
+                                  Fluttertoast.showToast(
+                                    msg: 'Error: Slot is already Booked',
+                                    toastLength: Toast.LENGTH_SHORT,
+                                    gravity: ToastGravity.CENTER,
+                                    timeInSecForIosWeb: 3,
+                                    backgroundColor: Colors.red,
+                                    textColor: Colors.white,
+                                    fontSize: 16.0,
+                                  );
+                                }
+                              },
+                            ),
+                          );
+                        },
+                      );
+                    } else {
+                      return Container(
+                        child: Center(
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 20, right: 20),
+                            child: Text(
+                                "Appointments are not being created for this day yet...."),
+                          ),
+                        ),
+                      );
+                    }
                   }
                 },
               ),
@@ -357,15 +441,29 @@ class _BookAppNowState extends State<BookAppNow> {
                       Colors.white,
                       Colors.white,
                     ]),
-                borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(20),
-                  bottomRight: Radius.circular(20),
-                  topLeft: Radius.circular(20),
-                  topRight: Radius.circular(20),
-                ),
+                // borderRadius: BorderRadius.only(
+                //   bottomLeft: Radius.circular(20),
+                //   bottomRight: Radius.circular(20),
+                //   topLeft: Radius.circular(20),
+                //   topRight: Radius.circular(20),
+                // ),
               ),
             ),
           ),
+          if (_selectSlotValue)
+            Center(
+                child: Padding(
+              padding: const EdgeInsets.only(
+                top: 20,
+              ),
+              child: Text(
+                "Selected slot: $book_StartTime - $book_EndTime",
+                style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            )),
           Padding(
             padding: const EdgeInsets.only(
               top: 20,
@@ -425,6 +523,7 @@ class _BookAppNowState extends State<BookAppNow> {
                     //     );
                     //   }
                     // });
+
                   } else {
                     "problem signin- check";
                   }
