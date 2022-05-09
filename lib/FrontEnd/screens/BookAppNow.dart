@@ -16,8 +16,10 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class BookAppNow extends StatefulWidget {
-  final String problemtype = "";
-  const BookAppNow({Key? key, @required problemtype}) : super(key: key);
+  final String problemtype;
+  final String token;
+  const BookAppNow({Key? key, required this.problemtype, required this.token})
+      : super(key: key);
 
   @override
   State<BookAppNow> createState() => _BookAppNowState();
@@ -38,6 +40,8 @@ class _BookAppNowState extends State<BookAppNow> {
   bool _selectSlotValue = false;
   String? book_StartTime;
   String? book_EndTime;
+
+  String? document_id;
 
   Future<List<UserValue>>? _futureData;
 
@@ -105,6 +109,7 @@ class _BookAppNowState extends State<BookAppNow> {
 
       for (var u in str) {
         UserValue usr = new UserValue(
+            u['_id'],
             u['date'],
             u['slot'],
             u['start_time'],
@@ -130,6 +135,7 @@ class _BookAppNowState extends State<BookAppNow> {
 
   void _printdate() {
     print("The Date is: ${date}");
+    print("the token is: $widget.token");
   }
 
   @override
@@ -398,8 +404,11 @@ class _BookAppNowState extends State<BookAppNow> {
                                   book_StartTime =
                                       snapshot.data[index].start_time;
                                   book_EndTime = snapshot.data[index].end_time;
+                                  document_id = snapshot.data[index]._id;
                                   print(book_StartTime);
                                   print(book_EndTime);
+                                  print(snapshot.data[index]._id);
+                                  print("the token in app: ${widget.token}");
                                   setState(() {
                                     _selectSlotValue = true;
                                   });
@@ -502,7 +511,7 @@ class _BookAppNowState extends State<BookAppNow> {
           ),
           Center(
             child: ElevatedButton(
-                child: Text("REGISTER"),
+                child: Text("BOOK APPOINTMENT"),
                 onPressed: () {
                   if (globalFormKey.currentState!.validate()) {
                     //Navigator.pushNamed(context, MyRoutings.homeRoute);
@@ -559,6 +568,7 @@ class LoadSlot {
 }
 
 class UserValue {
+  final String? _id;
   final String date;
   final String slot;
   final String start_time;
@@ -572,6 +582,7 @@ class UserValue {
   final String user_email;
 
   UserValue(
+    this._id,
     this.date,
     this.slot,
     this.start_time,

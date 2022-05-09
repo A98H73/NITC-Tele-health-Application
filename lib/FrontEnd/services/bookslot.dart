@@ -26,4 +26,18 @@ class ListBookedSlot {
       );
     }
   }
+
+  bookAnAppointment(_id, date, slot, start_time, end_time, doc_name, doc_email,
+      doc_spec_in, description, app_booked, user_name, user_email) async {
+    try {} on DioError catch (e) {
+      Fluttertoast.showToast(
+        msg: e.response?.data['msg'],
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        fontSize: 16.0,
+      );
+    }
+  }
 }

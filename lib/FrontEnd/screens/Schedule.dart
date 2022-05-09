@@ -147,6 +147,10 @@ class _CreateScheduleState extends State<CreateSchedule> {
     _height = MediaQuery.of(context).size.height;
     _width = MediaQuery.of(context).size.width;
     dateTime = DateFormat.yMd().format(DateTime.now());
+    builder:
+    (context, child) => MediaQuery(
+        data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true),
+        child: child);
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(

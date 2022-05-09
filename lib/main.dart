@@ -34,7 +34,7 @@ class MyApp extends StatelessWidget {
         primaryColor: Colors.lightBlue[800],
       ),
       routes: {
-        //'/': (context) => const LoginPage(),
+        '/': (context) => const LoginPage(),
         '/registeruser': (context) => const RegisterUser(),
         '/registerdoctor': (context) => const RegisterDoctor(),
         '/registeradmin': (context) => const RegisterAdmin(),
@@ -44,10 +44,13 @@ class MyApp extends StatelessWidget {
         '/deletedoctor': (context) => const DeleteDoctor(),
         '/schedule': (context) => const CreateSchedule(),
         '/printcerti': (context) => const PrintMedicalCertificate(),
-        //'/appointment': (context) => BookAppointments(),
-        '/': (context) => BookAppointments(),
+        '/appointment': (context) => BookAppointments(
+              token: "",
+            ),
+        // '/': (context) => BookAppointments(),
         '/bookappnow': (context) => BookAppNow(
-              problemtype: null,
+              problemtype: "",
+              token: "",
             ),
       },
     );

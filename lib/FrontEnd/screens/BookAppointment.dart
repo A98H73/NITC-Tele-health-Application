@@ -3,7 +3,8 @@ import 'package:nitc_telehealth_application/FrontEnd/screens/BookAppNow.dart';
 import 'package:snippet_coder_utils/hex_color.dart';
 
 class BookAppointments extends StatelessWidget {
-  const BookAppointments({Key? key}) : super(key: key);
+  final String token;
+  const BookAppointments({Key? key, required this.token}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -57,11 +58,13 @@ class BookAppointments extends StatelessWidget {
                   ),
                   onTap: () {
                     //Navigator.pushNamed(context, "/bookappnow");
+                    print("Your tokwn is: $token");
                     Navigator.push(
                         context,
                         MaterialPageRoute(
                           builder: (context) => BookAppNow(
                             problemtype: "Mental Health",
+                            token: token,
                           ),
                         ));
                   },
@@ -93,6 +96,7 @@ class BookAppointments extends StatelessWidget {
                         MaterialPageRoute(
                           builder: (context) => BookAppNow(
                             problemtype: "Dental Health",
+                            token: token,
                           ),
                         ));
                   },
@@ -124,6 +128,7 @@ class BookAppointments extends StatelessWidget {
                         MaterialPageRoute(
                           builder: (context) => BookAppNow(
                             problemtype: "Diagnostic Care",
+                            token: token,
                           ),
                         ));
                   },
@@ -155,6 +160,7 @@ class BookAppointments extends StatelessWidget {
                         MaterialPageRoute(
                           builder: (context) => BookAppNow(
                             problemtype: "Prevensive Care",
+                            token: token,
                           ),
                         ));
                   },
@@ -186,6 +192,7 @@ class BookAppointments extends StatelessWidget {
                         MaterialPageRoute(
                           builder: (context) => BookAppNow(
                             problemtype: "Physical therapy",
+                            token: token,
                           ),
                         ));
                   },
@@ -217,6 +224,7 @@ class BookAppointments extends StatelessWidget {
                         MaterialPageRoute(
                           builder: (context) => BookAppNow(
                             problemtype: "Nutritional Care",
+                            token: token,
                           ),
                         ));
                   },
@@ -248,6 +256,7 @@ class BookAppointments extends StatelessWidget {
                         MaterialPageRoute(
                           builder: (context) => BookAppNow(
                             problemtype: "Mild Problems",
+                            token: token,
                           ),
                         ));
                   },
@@ -274,7 +283,14 @@ class BookAppointments extends StatelessWidget {
                     alignment: Alignment.center,
                   ),
                   onTap: () {
-                    Navigator.pushNamed(context, "/deletedoctor");
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => BookAppNow(
+                            problemtype: "Medical leave",
+                            token: token,
+                          ),
+                        ));
                   },
                 ),
               ),

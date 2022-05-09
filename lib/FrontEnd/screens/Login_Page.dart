@@ -1,6 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:nitc_telehealth_application/FrontEnd/screens/BookAppointment.dart';
 import 'package:nitc_telehealth_application/FrontEnd/services/authservice.dart';
 import 'package:snippet_coder_utils/FormHelper.dart';
 import 'package:snippet_coder_utils/ProgressHUD.dart';
@@ -285,7 +286,12 @@ class _LoginPageState extends State<LoginPage> {
                             textColor: Colors.white,
                             fontSize: 16.0,
                           );
-                          Navigator.pushNamed(context, "/appointment");
+                          print("token in login page: $token");
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      BookAppointments(token: token!)));
                         }
                       });
                     } else if (type == "admin") {
