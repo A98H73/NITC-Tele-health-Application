@@ -3,6 +3,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:nitc_telehealth_application/FrontEnd/screens/BookAppointment.dart';
 import 'package:nitc_telehealth_application/FrontEnd/services/bookslot.dart';
 import 'package:nitc_telehealth_application/FrontEnd/services/createSchedule.dart';
 import 'package:snippet_coder_utils/ProgressHUD.dart';
@@ -10,6 +11,7 @@ import 'package:snippet_coder_utils/hex_color.dart';
 import 'package:date_format/date_format.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:intl/intl.dart';
+import 'package:jwt_decoder/jwt_decoder.dart';
 
 import 'dart:async';
 import 'package:http/http.dart' as http;
@@ -29,19 +31,23 @@ class _BookAppNowState extends State<BookAppNow> {
   bool isAPICallProcess = false;
   GlobalKey<FormState> globalFormKey = GlobalKey<FormState>();
 
+  Map<String, dynamic>? decodedToken;
+
   String? user_name;
-  String? user_rollno;
   String? user_email;
+  String? doc_name;
+  String? doc_email;
+  String? doc_spec_in;
   String? slot;
   String? date;
-  bool? appointment_book = false;
+  bool? app_booked = false;
   Color bgcolor = Colors.white;
-  String? description;
+  String? descreption;
   bool _selectSlotValue = false;
-  String? book_StartTime;
-  String? book_EndTime;
+  String? start_time;
+  String? end_time;
 
-  String? document_id;
+  String? _id;
 
   Future<List<UserValue>>? _futureData;
 
@@ -85,6 +91,7 @@ class _BookAppNowState extends State<BookAppNow> {
       data: {
         "date": date,
         "slot": slot,
+        "doc_spec_in": widget.problemtype,
       },
       options: Options(contentType: Headers.formUrlEncodedContentType),
     );
@@ -131,6 +138,13 @@ class _BookAppNowState extends State<BookAppNow> {
     } else {
       throw Exception('Failed to load album');
     }
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    decodedToken = JwtDecoder.decode(widget.token);
   }
 
   void _printdate() {
@@ -401,14 +415,19 @@ class _BookAppNowState extends State<BookAppNow> {
                               //tileColor: bgcolor,
                               onTap: () {
                                 if (snapshot.data[index].app_booked == false) {
-                                  book_StartTime =
-                                      snapshot.data[index].start_time;
-                                  book_EndTime = snapshot.data[index].end_time;
-                                  document_id = snapshot.data[index]._id;
-                                  print(book_StartTime);
-                                  print(book_EndTime);
+                                  start_time = snapshot.data[index].start_time;
+                                  end_time = snapshot.data[index].end_time;
+                                  _id = snapshot.data[index]._id;
+                                  doc_name = snapshot.data[index].doc_name;
+                                  doc_email = snapshot.data[index].doc_email;
+                                  doc_spec_in =
+                                      snapshot.data[index].doc_spec_in;
+                                  print(start_time);
+                                  print(end_time);
                                   print(snapshot.data[index]._id);
                                   print("the token in app: ${widget.token}");
+                                  print(
+                                      "User Name is: ${decodedToken!['name']}");
                                   setState(() {
                                     _selectSlotValue = true;
                                   });
@@ -466,7 +485,7 @@ class _BookAppNowState extends State<BookAppNow> {
                 top: 20,
               ),
               child: Text(
-                "Selected slot: $book_StartTime - $book_EndTime",
+                "Selected slot: $start_time - $end_time",
                 style: TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.bold,
@@ -480,16 +499,16 @@ class _BookAppNowState extends State<BookAppNow> {
               right: 20,
             ),
             child: TextFormField(
-              controller: TextEditingController(text: description),
+              controller: TextEditingController(text: descreption),
               onChanged: (value) {
-                description = value;
+                descreption = value;
               },
               minLines: 1,
               maxLines: 5,
               keyboardType: TextInputType.multiline,
               style: TextStyle(color: Colors.white),
               decoration: InputDecoration(
-                labelText: "Give Problem Description (Optional)",
+                labelText: "Give Problem descreption (Optional)",
                 labelStyle: TextStyle(color: Colors.white),
                 enabledBorder: OutlineInputBorder(
                   borderRadius: const BorderRadius.all(Radius.circular(10.0)),
@@ -513,28 +532,57 @@ class _BookAppNowState extends State<BookAppNow> {
             child: ElevatedButton(
                 child: Text("BOOK APPOINTMENT"),
                 onPressed: () {
+                  print("testing");
                   if (globalFormKey.currentState!.validate()) {
-                    //Navigator.pushNamed(context, MyRoutings.homeRoute);
-
-                    // AddNewUser()
-                    //     .AddUser(name, type, branch, rollno, email, password)
-                    //     .then((val) {
-                    //   if (val.data['success']) {
-                    //     //token = val.data['token'];
-                    //     Fluttertoast.showToast(
-                    //       msg: 'New user Added Successfully',
-                    //       toastLength: Toast.LENGTH_SHORT,
-                    //       gravity: ToastGravity.BOTTOM,
-                    //       timeInSecForIosWeb: 1,
-                    //       backgroundColor: Colors.green,
-                    //       textColor: Colors.white,
-                    //       fontSize: 16.0,
-                    //     );
-                    //   }
-                    // });
-
+                    app_booked = true;
+                    user_name = decodedToken!['name'];
+                    user_email = decodedToken!['email'];
+                    print(date);
+                    print(slot);
+                    print(start_time);
+                    print(end_time);
+                    print(doc_name);
+                    print(doc_email);
+                    print(doc_spec_in);
+                    print(descreption);
+                    print(app_booked);
+                    print(user_name);
+                    print(user_email);
+                    ListBookedSlot()
+                        .bookAnAppointment(
+                            _id,
+                            date,
+                            slot,
+                            start_time,
+                            end_time,
+                            doc_name,
+                            doc_email,
+                            doc_spec_in,
+                            descreption,
+                            app_booked,
+                            user_name,
+                            user_email)
+                        .then((val) {
+                      print(val.data);
+                      if (val.data['success']) {
+                        Fluttertoast.showToast(
+                          msg: 'Appointment Booked Successfully',
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.CENTER,
+                          timeInSecForIosWeb: 4,
+                          backgroundColor: Colors.green,
+                          textColor: Colors.white,
+                          fontSize: 16.0,
+                        );
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    BookAppointments(token: widget.token)));
+                      }
+                    });
                   } else {
-                    "problem signin- check";
+                    print("problem signin- check");
                   }
                 },
                 style: ElevatedButton.styleFrom(
