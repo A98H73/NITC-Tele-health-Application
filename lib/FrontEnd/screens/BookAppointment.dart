@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:nitc_telehealth_application/FrontEnd/screens/BookAppNow.dart';
+import 'package:nitc_telehealth_application/FrontEnd/screens/CancelAppointment.dart';
 import 'package:snippet_coder_utils/hex_color.dart';
 
 class BookAppointments extends StatelessWidget {
@@ -12,6 +13,24 @@ class BookAppointments extends StatelessWidget {
     double _width = MediaQuery.of(context).size.width;
     return SafeArea(
       child: Scaffold(
+        floatingActionButton: FloatingActionButton(
+          elevation: 5,
+          onPressed: (() {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => CancelAppointments(
+                    token: token,
+                  ),
+                ));
+          }),
+          backgroundColor: Colors.white.withOpacity(1),
+          child: const Icon(
+            Icons.event_busy,
+            size: 30,
+            color: Color.fromARGB(255, 7, 14, 1),
+          ),
+        ),
         backgroundColor: HexColor('#283B71'),
         appBar: AppBar(
           title: Text(
@@ -20,7 +39,6 @@ class BookAppointments extends StatelessWidget {
           ),
           backgroundColor: HexColor("#283B71"),
         ),
-        drawer: Drawer(),
         body: Padding(
           padding: const EdgeInsets.only(
             top: 40,

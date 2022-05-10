@@ -1,97 +1,52 @@
-// import 'dart:ffi';
-
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'dart:async';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 import 'package:nitc_telehealth_application/FrontEnd/screens/BookAppointment.dart';
 import 'package:nitc_telehealth_application/FrontEnd/services/bookslot.dart';
-import 'package:nitc_telehealth_application/FrontEnd/services/createSchedule.dart';
 import 'package:snippet_coder_utils/ProgressHUD.dart';
 import 'package:snippet_coder_utils/hex_color.dart';
-import 'package:date_format/date_format.dart';
-import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
-import 'package:intl/intl.dart';
+import '../services/RemoveData.dart';
+import 'package:dio/dio.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 
-import 'dart:async';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
-
-class BookAppNow extends StatefulWidget {
-  final String problemtype;
+class CancelAppointments extends StatefulWidget {
   final String token;
-  const BookAppNow({Key? key, required this.problemtype, required this.token})
-      : super(key: key);
+  const CancelAppointments({Key? key, required this.token}) : super(key: key);
 
   @override
-  State<BookAppNow> createState() => _BookAppNowState();
+  State<CancelAppointments> createState() => _CancelAppointmentsState();
 }
 
-class _BookAppNowState extends State<BookAppNow> {
+class _CancelAppointmentsState extends State<CancelAppointments> {
   bool isAPICallProcess = false;
+
   GlobalKey<FormState> globalFormKey = GlobalKey<FormState>();
 
   Map<String, dynamic>? decodedToken;
-
-  String? user_name;
   String? user_email;
+  String? user_name;
+  String? date;
+  String? slot;
   String? doc_name;
   String? doc_email;
   String? doc_spec_in;
-  String? slot;
-  String? date;
-  bool? app_booked = false;
-  Color bgcolor = Colors.white;
   String? descreption;
+  bool app_booked = true;
   bool _selectSlotValue = false;
   String? start_time;
   String? end_time;
-
   String? _id;
 
-  Future<List<UserValue>>? _futureData;
-
-  List<DropdownMenuItem<String>> get dropdownItems {
-    List<DropdownMenuItem<String>> menuItems = [
-      DropdownMenuItem(child: Text("Morning"), value: "morning"),
-      DropdownMenuItem(child: Text("Afternoon"), value: "afternoon"),
-      DropdownMenuItem(child: Text("Evening"), value: "evening"),
-    ];
-    return menuItems;
-  }
-
-  // String? _setDate;
-
-  DateTime selectedDate = DateTime.now();
-  TextEditingController _dateController = new TextEditingController();
-
-  Future<String> _selectDate(BuildContext context) async {
-    final DateTime? picked = await showDatePicker(
-        context: context,
-        initialDate: selectedDate,
-        initialDatePickerMode: DatePickerMode.day,
-        firstDate: DateTime(2015),
-        lastDate: DateTime(2101));
-    if (picked != null)
-      setState(() {
-        selectedDate = picked;
-        _dateController.text = DateFormat.yMd().format(selectedDate);
-        date = _dateController.text;
-        // print("value of: " + _dateController.text);
-        date = _dateController.text;
-      });
-    return _dateController.text;
-  }
-
-  Future<List<UserValue>> _getSlots(String date, String slot) async {
+  Future<List<UserValue>> _getSlots() async {
     Dio dio = new Dio();
 
     var value = await dio.post(
-      'https://nitc-tele-health-app.herokuapp.com/searchslot',
+      'https://nitc-tele-health-app.herokuapp.com/bookedslots',
       data: {
-        "date": date,
-        "slot": slot,
-        "doc_spec_in": widget.problemtype,
+        "user_email": user_email,
+        "app_booked": app_booked,
       },
       options: Options(contentType: Headers.formUrlEncodedContentType),
     );
@@ -107,9 +62,8 @@ class _BookAppNowState extends State<BookAppNow> {
     if (value.statusCode == 200) {
       //List<LoadSlot> slot_book = [];
       List<UserValue> sloting = [];
-      print(date);
-      print(slot);
-      print("date value: " + _dateController.text);
+      print(user_email);
+      print(app_booked);
 
       List<dynamic> str = value.data['user'];
       // print(str[1]['doc_name']);
@@ -143,13 +97,10 @@ class _BookAppNowState extends State<BookAppNow> {
   @override
   void initState() {
     // TODO: implement initState
-    super.initState();
     decodedToken = JwtDecoder.decode(widget.token);
-  }
+    user_email = decodedToken!['email'];
 
-  void _printdate() {
-    print("The Date is: ${date}");
-    print("the token is: $widget.token");
+    super.initState();
   }
 
   @override
@@ -158,8 +109,10 @@ class _BookAppNowState extends State<BookAppNow> {
       child: Scaffold(
         appBar: AppBar(
           title: Text(
-            "Book An Appointment",
-            style: TextStyle(color: Colors.white),
+            "Cancel Appointments",
+            style: TextStyle(
+              color: Colors.white,
+            ),
           ),
           backgroundColor: HexColor("#283B71"),
         ),
@@ -167,7 +120,7 @@ class _BookAppNowState extends State<BookAppNow> {
         body: ProgressHUD(
           child: Form(
             key: globalFormKey,
-            child: _appointmentUI(context),
+            child: _cancelAppUI(context),
           ),
           inAsyncCall: isAPICallProcess,
           opacity: 0.3,
@@ -177,173 +130,12 @@ class _BookAppNowState extends State<BookAppNow> {
     );
   }
 
-  Widget _appointmentUI(BuildContext context) {
+  Widget _cancelAppUI(BuildContext context) {
     return SingleChildScrollView(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Container(
-            width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.height / 4,
-            decoration: const BoxDecoration(
-              gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [
-                    Colors.white,
-                    Colors.white,
-                  ]),
-              borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(100),
-                bottomRight: Radius.circular(100),
-                topLeft: Radius.circular(50),
-                topRight: Radius.circular(50),
-              ),
-            ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Align(
-                  alignment: Alignment.center,
-                  child: Image.asset(
-                    "assets/images/schedule.jpg",
-                    width: 245,
-                    fit: BoxFit.contain,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(
-              top: 20,
-              left: 85,
-              bottom: 30,
-            ),
-            child: Text(
-              "Book Appointment",
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 25,
-                color: Colors.white,
-              ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(
-              top: 20,
-              left: 20,
-              right: 20,
-            ),
-            child: InkWell(
-              customBorder: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10.0),
-                  side: BorderSide(color: Colors.red)),
-              onTap: () {
-                _selectDate(context);
-              },
-              child: Container(
-                height: 60,
-                alignment: Alignment.center,
-                decoration: BoxDecoration(
-                    border: Border.all(
-                      color: Colors.white,
-                    ),
-                    borderRadius: BorderRadius.all(Radius.circular(10))),
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 10.0, right: 10.0),
-                  child: TextFormField(
-                    textAlign: TextAlign.left,
-                    enabled: false,
-                    keyboardType: TextInputType.text,
-                    controller: _dateController,
-                    onChanged: (value) {
-                      _printdate();
-                      date = _dateController.text;
-                    },
-                    decoration: InputDecoration(
-                      hintText: "Enter Date",
-                      hintStyle: TextStyle(color: Colors.white),
-                      icon: Icon(
-                        Icons.date_range,
-                        size: 25.0,
-                        color: Colors.white,
-                      ),
-                    ),
-                    style: TextStyle(fontSize: 15, color: Colors.white),
-                  ),
-                ),
-              ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(
-              left: 20,
-              right: 20,
-              top: 20,
-            ),
-            child: DropdownButtonFormField(
-              items: dropdownItems,
-              value: slot,
-              onChanged: (String? newValue) {
-                setState(() {
-                  slot = newValue!;
-                });
-              },
-              dropdownColor: HexColor('#283B71'),
-              style: TextStyle(
-                color: Colors.white,
-              ),
-              decoration: InputDecoration(
-                hintText: "Select Slot",
-                hintStyle: TextStyle(color: Colors.white),
-                enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.white),
-                  borderRadius: BorderRadius.circular(10.0),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.white),
-                  borderRadius: BorderRadius.circular(10.0),
-                ),
-                filled: true,
-                //fillColor: Colors.blueAccent,
-              ),
-            ),
-          ),
-          SizedBox(
-            height: 10,
-          ),
-          Center(
-            child: ElevatedButton(
-                child: Text("SEARCH"),
-                onPressed: () {
-                  if (globalFormKey.currentState!.validate()) {
-                    //Navigator.pushNamed(context, MyRoutings.homeRoute);
-                    setState(() {
-                      print(date);
-                      print(slot);
-                      _futureData = _getSlots(date!, slot!);
-                    });
-                  } else {
-                    "problem signin- check";
-                  }
-                },
-                style: ElevatedButton.styleFrom(
-                    primary: HexColor("#283B71"),
-                    side: BorderSide(
-                      width: 1.0,
-                      color: Colors.white.withOpacity(0.7),
-                    ),
-                    shape: new RoundedRectangleBorder(
-                      borderRadius: new BorderRadius.circular(10.0),
-                    ),
-                    padding: EdgeInsets.symmetric(horizontal: 50, vertical: 20),
-                    textStyle: TextStyle(
-                      fontSize: 16,
-                      color: Colors.white,
-                    ))),
-          ),
           Padding(
             padding: const EdgeInsets.only(
               left: 20,
@@ -354,7 +146,7 @@ class _BookAppNowState extends State<BookAppNow> {
               width: MediaQuery.of(context).size.width,
               height: MediaQuery.of(context).size.height / 2,
               child: FutureBuilder(
-                future: _futureData,
+                future: _getSlots(),
                 builder: (BuildContext context, AsyncSnapshot snapshot) {
                   if (snapshot.data == null) {
                     return Container(
@@ -414,14 +206,17 @@ class _BookAppNowState extends State<BookAppNow> {
                               ),
                               //tileColor: bgcolor,
                               onTap: () {
-                                if (snapshot.data[index].app_booked == false) {
-                                  start_time = snapshot.data[index].start_time;
-                                  end_time = snapshot.data[index].end_time;
-                                  _id = snapshot.data[index]._id;
+                                if (snapshot.data[index].app_booked == true) {
+                                  date = snapshot.data[index].date;
+                                  slot = snapshot.data[index].slot;
                                   doc_name = snapshot.data[index].doc_name;
                                   doc_email = snapshot.data[index].doc_email;
                                   doc_spec_in =
                                       snapshot.data[index].doc_spec_in;
+                                  start_time = snapshot.data[index].start_time;
+                                  end_time = snapshot.data[index].end_time;
+                                  _id = snapshot.data[index]._id;
+
                                   print(start_time);
                                   print(end_time);
                                   print(snapshot.data[index]._id);
@@ -492,50 +287,20 @@ class _BookAppNowState extends State<BookAppNow> {
                 ),
               ),
             )),
-          Padding(
-            padding: const EdgeInsets.only(
-              top: 20,
-              left: 20,
-              right: 20,
-            ),
-            child: TextFormField(
-              controller: TextEditingController(text: descreption),
-              onChanged: (value) {
-                descreption = value;
-              },
-              minLines: 1,
-              maxLines: 5,
-              keyboardType: TextInputType.multiline,
-              style: TextStyle(color: Colors.white),
-              decoration: InputDecoration(
-                labelText: "Give Problem descreption (Optional)",
-                labelStyle: TextStyle(color: Colors.white),
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: const BorderRadius.all(Radius.circular(10.0)),
-                  borderSide: BorderSide(
-                    color: Colors.white,
-                  ),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10.0),
-                  borderSide: BorderSide(
-                    color: Colors.white,
-                  ),
-                ),
-              ),
-            ),
-          ),
           SizedBox(
             height: 10,
           ),
           Center(
             child: ElevatedButton(
-                child: Text("BOOK APPOINTMENT"),
+                child: Text("CANCEL APPOINTMENT"),
                 onPressed: () {
+                  print("testing");
                   if (globalFormKey.currentState!.validate()) {
-                    app_booked = true;
-                    user_name = decodedToken!['name'];
-                    user_email = decodedToken!['email'];
+                    app_booked = false;
+                    user_name = "";
+                    user_email = "";
+                    descreption = "";
+                    print(_id);
                     print(date);
                     print(slot);
                     print(start_time);
@@ -544,11 +309,11 @@ class _BookAppNowState extends State<BookAppNow> {
                     print(doc_email);
                     print(doc_spec_in);
                     print(descreption);
-                    print(app_booked);
                     print(user_name);
+                    print(app_booked);
                     print(user_email);
                     ListBookedSlot()
-                        .bookAnAppointment(
+                        .cancelApp(
                             _id,
                             date,
                             slot,
@@ -565,7 +330,7 @@ class _BookAppNowState extends State<BookAppNow> {
                       print(val.data);
                       if (val.data['success']) {
                         Fluttertoast.showToast(
-                          msg: 'Appointment Booked Successfully',
+                          msg: 'Appointment Cancelled Successfully',
                           toastLength: Toast.LENGTH_SHORT,
                           gravity: ToastGravity.CENTER,
                           timeInSecForIosWeb: 4,
@@ -578,6 +343,16 @@ class _BookAppNowState extends State<BookAppNow> {
                             MaterialPageRoute(
                                 builder: (context) =>
                                     BookAppointments(token: widget.token)));
+                      } else if (!val.data['success']) {
+                        Fluttertoast.showToast(
+                          msg: val.data['msg'],
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.CENTER,
+                          timeInSecForIosWeb: 4,
+                          backgroundColor: Colors.red,
+                          textColor: Colors.white,
+                          fontSize: 16.0,
+                        );
                       }
                     });
                   } else {
@@ -598,9 +373,6 @@ class _BookAppNowState extends State<BookAppNow> {
                       fontSize: 16,
                       color: Colors.white,
                     ))),
-          ),
-          SizedBox(
-            height: 80,
           ),
         ],
       ),

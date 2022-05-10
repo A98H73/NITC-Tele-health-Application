@@ -59,4 +59,36 @@ class ListBookedSlot {
       );
     }
   }
+
+  cancelApp(_id, date, slot, start_time, end_time, doc_name, doc_email,
+      doc_spec_in, descreption, app_booked, user_name, user_email) async {
+    try {
+      return await dio.put(
+        'https://nitc-tele-health-app.herokuapp.com/cancelappointment/$_id',
+        data: {
+          "date": date,
+          "slot": slot,
+          "start_time": start_time,
+          "end_time": end_time,
+          "doc_name": doc_name,
+          "doc_email": doc_email,
+          "doc_spec_in": doc_spec_in,
+          "descreption": descreption,
+          "app_booked": app_booked,
+          "user_name": user_name,
+          "user_email": user_email
+        },
+        options: Options(contentType: Headers.formUrlEncodedContentType),
+      );
+    } on DioError catch (e) {
+      Fluttertoast.showToast(
+        msg: e.response?.data['msg'],
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        fontSize: 16.0,
+      );
+    }
+  }
 }

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:nitc_telehealth_application/FrontEnd/screens/BookAppNow.dart';
 import 'package:nitc_telehealth_application/FrontEnd/screens/BookAppointment.dart';
+import 'package:nitc_telehealth_application/FrontEnd/screens/CancelAppointment.dart';
+import 'package:nitc_telehealth_application/FrontEnd/screens/ForgotPassword.dart';
 import 'package:nitc_telehealth_application/FrontEnd/screens/Login_Page.dart';
 import 'package:nitc_telehealth_application/FrontEnd/screens/PrintMedicalCerti.dart';
 import 'package:nitc_telehealth_application/FrontEnd/screens/RegisterUsers.dart';
@@ -35,6 +37,7 @@ class MyApp extends StatelessWidget {
       ),
       routes: {
         '/': (context) => const LoginPage(),
+        '/forgotpasswd': (context) => ForgotPasswd(),
         '/registeruser': (context) => const RegisterUser(),
         '/registerdoctor': (context) => const RegisterDoctor(),
         '/registeradmin': (context) => const RegisterAdmin(),
@@ -50,6 +53,9 @@ class MyApp extends StatelessWidget {
         // '/': (context) => BookAppointments(),
         '/bookappnow': (context) => BookAppNow(
               problemtype: "",
+              token: "",
+            ),
+        '/usercancelapp': (context) => CancelAppointments(
               token: "",
             ),
       },
