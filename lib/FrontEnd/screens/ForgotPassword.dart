@@ -5,6 +5,7 @@ import 'dart:async';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:nitc_telehealth_application/FrontEnd/screens/BookAppointment.dart';
 import 'package:nitc_telehealth_application/FrontEnd/services/authservice.dart';
+import 'package:nitc_telehealth_application/FrontEnd/services/updateAllUsers.dart';
 import 'package:snippet_coder_utils/FormHelper.dart';
 import 'package:snippet_coder_utils/ProgressHUD.dart';
 import 'package:snippet_coder_utils/hex_color.dart';
@@ -428,21 +429,105 @@ class _ForgotPasswdState extends State<ForgotPasswd> {
                       child: Text("RESET PASSWORD"),
                       onPressed: () {
                         if (globalFormKey.currentState!.validate()) {
+                          if (password == cnfpasswd && type == "user") {
+                            UpdateUsers()
+                                .updatePatient(
+                                    type, _emailController.text, password)
+                                .then((val) {
+                              if (val.data['success']) {
+                                Fluttertoast.showToast(
+                                  msg: 'Password Updated Successfully',
+                                  toastLength: Toast.LENGTH_SHORT,
+                                  gravity: ToastGravity.BOTTOM,
+                                  timeInSecForIosWeb: 1,
+                                  backgroundColor: Colors.green,
+                                  textColor: Colors.white,
+                                  fontSize: 16.0,
+                                );
+                              } else {
+                                Fluttertoast.showToast(
+                                  msg: 'Something Went Wrong',
+                                  toastLength: Toast.LENGTH_SHORT,
+                                  gravity: ToastGravity.BOTTOM,
+                                  timeInSecForIosWeb: 1,
+                                  backgroundColor: Colors.green,
+                                  textColor: Colors.white,
+                                  fontSize: 16.0,
+                                );
+                              }
+                            });
+                          } else if (password == cnfpasswd && type == "admin") {
+                            UpdateUsers()
+                                .updateAdmin(type, email, password)
+                                .then((val) {
+                              print(val.data);
+                              if (val.data['success']) {
+                                Fluttertoast.showToast(
+                                  msg: 'Password Updated Successfully',
+                                  toastLength: Toast.LENGTH_SHORT,
+                                  gravity: ToastGravity.BOTTOM,
+                                  timeInSecForIosWeb: 1,
+                                  backgroundColor: Colors.green,
+                                  textColor: Colors.white,
+                                  fontSize: 16.0,
+                                );
+                              } else {
+                                Fluttertoast.showToast(
+                                  msg: 'Something Went Wrong',
+                                  toastLength: Toast.LENGTH_SHORT,
+                                  gravity: ToastGravity.BOTTOM,
+                                  timeInSecForIosWeb: 1,
+                                  backgroundColor: Colors.green,
+                                  textColor: Colors.white,
+                                  fontSize: 16.0,
+                                );
+                              }
+                            });
+                          } else if (password == cnfpasswd &&
+                              type == "doctor") {
+                            UpdateUsers()
+                                .updateDoc(type, email, password)
+                                .then((val) {
+                              print(val);
+                              if (val.data['success']) {
+                                Fluttertoast.showToast(
+                                  msg: 'Password Updated Successfully',
+                                  toastLength: Toast.LENGTH_SHORT,
+                                  gravity: ToastGravity.BOTTOM,
+                                  timeInSecForIosWeb: 1,
+                                  backgroundColor: Colors.green,
+                                  textColor: Colors.white,
+                                  fontSize: 16.0,
+                                );
+                              } else {
+                                Fluttertoast.showToast(
+                                  msg: 'Something Went Wrong',
+                                  toastLength: Toast.LENGTH_SHORT,
+                                  gravity: ToastGravity.BOTTOM,
+                                  timeInSecForIosWeb: 1,
+                                  backgroundColor: Colors.green,
+                                  textColor: Colors.white,
+                                  fontSize: 16.0,
+                                );
+                              }
+                            });
+                          }
+
                           //Navigator.pushNamed(context, MyRoutings.homeRoute);
 
                           // if (type == "user") {
                           //   AuthService().loginUser(email, password).then((val) {
                           //     if (val.data['success']) {
                           //       token = val.data['token'];
-                          //       Fluttertoast.showToast(
-                          //         msg: 'Authenticated',
-                          //         toastLength: Toast.LENGTH_SHORT,
-                          //         gravity: ToastGravity.BOTTOM,
-                          //         timeInSecForIosWeb: 1,
-                          //         backgroundColor: Colors.green,
-                          //         textColor: Colors.white,
-                          //         fontSize: 16.0,
-                          //       );
+                          // Fluttertoast.showToast(
+                          //   msg: 'Authenticated',
+                          //   toastLength: Toast.LENGTH_SHORT,
+                          //   gravity: ToastGravity.BOTTOM,
+                          //   timeInSecForIosWeb: 1,
+                          //   backgroundColor: Colors.green,
+                          //   textColor: Colors.white,
+                          //   fontSize: 16.0,
+                          // );
 
                           //       Navigator.push(
                           //           context,

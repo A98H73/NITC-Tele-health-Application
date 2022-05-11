@@ -24,6 +24,27 @@ class _RegisterDoctorState extends State<RegisterDoctor> {
   String? email;
   String? password;
 
+  List<DropdownMenuItem<String>> get dropdownItemsSpec {
+    List<DropdownMenuItem<String>> menuItems = [
+      DropdownMenuItem(
+          child: Text("Mental Health Care"), value: "Mental Health"),
+      DropdownMenuItem(
+          child: Text("Dental Health Care"), value: "Dental Health"),
+      DropdownMenuItem(
+          child: Text("Labooratory and diagnostic care"),
+          value: "Diagnostic Care"),
+      DropdownMenuItem(
+          child: Text("Prevensive Care"), value: "Prevensive Care"),
+      DropdownMenuItem(
+          child: Text("Physical and occupational therapy"),
+          value: "Physical therapy"),
+      DropdownMenuItem(
+          child: Text("Nutritional Care"), value: "Nutritional Care"),
+      DropdownMenuItem(child: Text("Mild Problems"), value: "Mild Problems"),
+    ];
+    return menuItems;
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -201,43 +222,42 @@ class _RegisterDoctorState extends State<RegisterDoctor> {
               ),
             ),
           ),
-          SizedBox(
-            height: 10,
-          ),
+
           Padding(
             padding: const EdgeInsets.only(
               left: 20,
               right: 20,
+              top: 10,
             ),
-            child: TextFormField(
-              controller: TextEditingController(text: spec_in),
-              onChanged: (value) {
-                spec_in = value;
+            child: DropdownButtonFormField(
+              items: dropdownItemsSpec,
+              value: spec_in,
+              onChanged: (String? newValue) {
+                setState(() {
+                  spec_in = newValue!;
+                });
               },
-              validator: (value) {
-                if (value == null) {
-                  return 'Field cannot be empty';
-                }
-              },
-              style: TextStyle(color: Colors.white),
+              dropdownColor: HexColor('#283B71'),
+              style: TextStyle(
+                color: Colors.white,
+              ),
               decoration: InputDecoration(
                 labelText: "Specilist In",
                 labelStyle: TextStyle(color: Colors.white),
                 enabledBorder: OutlineInputBorder(
-                  borderRadius: const BorderRadius.all(Radius.circular(10.0)),
-                  borderSide: BorderSide(
-                    color: Colors.white,
-                  ),
+                  borderSide: BorderSide(color: Colors.white),
+                  borderRadius: BorderRadius.circular(10.0),
                 ),
                 focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.white),
                   borderRadius: BorderRadius.circular(10.0),
-                  borderSide: BorderSide(
-                    color: Colors.white.withOpacity(0.5),
-                  ),
                 ),
+                filled: true,
+                //fillColor: Colors.blueAccent,
               ),
             ),
           ),
+
           SizedBox(
             height: 10,
           ),
@@ -353,7 +373,17 @@ class _RegisterDoctorState extends State<RegisterDoctor> {
                       if (val.data['success']) {
                         //token = val.data['token'];
                         Fluttertoast.showToast(
-                          msg: 'New user Added Successfully',
+                          msg: 'New Doctor Added Successfully',
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.BOTTOM,
+                          timeInSecForIosWeb: 1,
+                          backgroundColor: Colors.green,
+                          textColor: Colors.white,
+                          fontSize: 16.0,
+                        );
+                      } else {
+                        Fluttertoast.showToast(
+                          msg: 'Something Went Wrong',
                           toastLength: Toast.LENGTH_SHORT,
                           gravity: ToastGravity.BOTTOM,
                           timeInSecForIosWeb: 1,

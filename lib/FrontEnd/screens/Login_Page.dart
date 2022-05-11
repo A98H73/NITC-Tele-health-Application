@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:nitc_telehealth_application/FrontEnd/screens/BookAppointment.dart';
 import 'package:nitc_telehealth_application/FrontEnd/screens/ForgotPassword.dart';
+import 'package:nitc_telehealth_application/FrontEnd/screens/docCancelApp.dart';
 import 'package:nitc_telehealth_application/FrontEnd/services/authservice.dart';
 import 'package:snippet_coder_utils/FormHelper.dart';
 import 'package:snippet_coder_utils/ProgressHUD.dart';
@@ -327,6 +328,11 @@ class _LoginPageState extends State<LoginPage> {
                             textColor: Colors.white,
                             fontSize: 16.0,
                           );
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      DocCancelAppointment(token: token!)));
                         }
                       });
                     }

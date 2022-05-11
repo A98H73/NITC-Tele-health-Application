@@ -91,4 +91,27 @@ class ListBookedSlot {
       );
     }
   }
+
+  cancelDoctorAppointment(_id) async {
+    try {
+      final response = await dio.delete(
+          'https://nitc-tele-health-app.herokuapp.com/canceldocappointment/$_id');
+
+      if (response.statusCode == 200) {
+        return response;
+      } else {
+        throw Exception('Failed to delete Data');
+      }
+    } on DioError catch (e) {
+      Fluttertoast.showToast(
+        msg: e.response?.data['msg'],
+        toastLength: Toast.LENGTH_SHORT,
+        timeInSecForIosWeb: 4,
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        fontSize: 16.0,
+      );
+    }
+  }
 }

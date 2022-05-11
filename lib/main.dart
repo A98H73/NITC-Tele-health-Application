@@ -14,6 +14,7 @@ import 'package:nitc_telehealth_application/FrontEnd/screens/Schedule.dart';
 import 'package:nitc_telehealth_application/FrontEnd/screens/delete_admin.dart';
 import 'package:nitc_telehealth_application/FrontEnd/screens/delete_doctor.dart';
 import 'package:nitc_telehealth_application/FrontEnd/screens/delete_user.dart';
+import 'package:nitc_telehealth_application/FrontEnd/screens/docCancelApp.dart';
 import 'FrontEnd/screens/RegisterUsers.dart';
 
 void main() {
@@ -56,6 +57,9 @@ class MyApp extends StatelessWidget {
               token: "",
             ),
         '/usercancelapp': (context) => CancelAppointments(
+              token: "",
+            ),
+        '/doccancelapp': (context) => DocCancelAppointment(
               token: "",
             ),
       },

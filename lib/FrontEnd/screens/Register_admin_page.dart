@@ -353,7 +353,7 @@ class _RegisterAdminState extends State<RegisterAdmin> {
                       if (val.data['success']) {
                         //token = val.data['token'];
                         Fluttertoast.showToast(
-                          msg: 'New user Added Successfully',
+                          msg: 'New Admin Added Successfully',
                           toastLength: Toast.LENGTH_SHORT,
                           gravity: ToastGravity.BOTTOM,
                           timeInSecForIosWeb: 1,
