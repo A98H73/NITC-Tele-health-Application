@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:nitc_telehealth_application/FrontEnd/screens/BookAppNow.dart';
 import 'package:nitc_telehealth_application/FrontEnd/screens/CancelAppointment.dart';
+import 'package:nitc_telehealth_application/FrontEnd/screens/Login_Page.dart';
 import 'package:snippet_coder_utils/hex_color.dart';
 
 class BookAppointments extends StatelessWidget {
@@ -38,6 +39,18 @@ class BookAppointments extends StatelessWidget {
             style: TextStyle(color: Colors.white),
           ),
           backgroundColor: HexColor("#283B71"),
+          actions: [
+            IconButton(
+                onPressed: () {
+                  Navigator.pushReplacement<void, void>(
+                    context,
+                    MaterialPageRoute<void>(
+                      builder: (BuildContext context) => const LoginPage(),
+                    ),
+                  );
+                },
+                icon: Icon(Icons.logout)),
+          ],
         ),
         body: Padding(
           padding: const EdgeInsets.only(
@@ -305,7 +318,7 @@ class BookAppointments extends StatelessWidget {
                         context,
                         MaterialPageRoute(
                           builder: (context) => BookAppNow(
-                            problemtype: "Medical leave",
+                            problemtype: "Mental Health",
                             token: token,
                           ),
                         ));

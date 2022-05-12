@@ -5,6 +5,7 @@ import 'package:nitc_telehealth_application/FrontEnd/screens/BookAppointment.dar
 import 'package:nitc_telehealth_application/FrontEnd/screens/CancelAppointment.dart';
 import 'package:nitc_telehealth_application/FrontEnd/screens/ForgotPassword.dart';
 import 'package:nitc_telehealth_application/FrontEnd/screens/Login_Page.dart';
+import 'package:nitc_telehealth_application/FrontEnd/screens/PatientLeaveRequest.dart';
 import 'package:nitc_telehealth_application/FrontEnd/screens/PrintMedicalCerti.dart';
 import 'package:nitc_telehealth_application/FrontEnd/screens/RegisterUsers.dart';
 import 'package:nitc_telehealth_application/FrontEnd/screens/Register_admin_page.dart';
@@ -60,6 +61,9 @@ class MyApp extends StatelessWidget {
               token: "",
             ),
         '/doccancelapp': (context) => DocCancelAppointment(
+              token: "",
+            ),
+        '/requestmedleave': (context) => RequestMedLeave(
               token: "",
             ),
       },

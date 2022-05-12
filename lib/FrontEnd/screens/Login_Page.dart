@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:nitc_telehealth_application/FrontEnd/screens/BookAppointment.dart';
 import 'package:nitc_telehealth_application/FrontEnd/screens/ForgotPassword.dart';
+import 'package:nitc_telehealth_application/FrontEnd/screens/RegisterUsers.dart';
 import 'package:nitc_telehealth_application/FrontEnd/screens/docCancelApp.dart';
 import 'package:nitc_telehealth_application/FrontEnd/services/authservice.dart';
 import 'package:snippet_coder_utils/FormHelper.dart';
@@ -292,11 +293,19 @@ class _LoginPageState extends State<LoginPage> {
                             fontSize: 16.0,
                           );
 
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      BookAppointments(token: token!)));
+                          // Navigator.push(
+                          //     context,
+                          //     MaterialPageRoute(
+                          //         builder: (context) =>
+                          //             BookAppointments(token: token!)));
+
+                          Navigator.pushAndRemoveUntil(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    BookAppointments(token: token!)),
+                            (Route<dynamic> route) => false,
+                          );
                         }
                       });
                     } else if (type == "admin") {
@@ -312,7 +321,18 @@ class _LoginPageState extends State<LoginPage> {
                             textColor: Colors.white,
                             fontSize: 16.0,
                           );
-                          Navigator.pushNamed(context, "/register");
+
+                          // Navigator.push(
+                          //     context,
+                          //     MaterialPageRoute(
+                          //         builder: (context) => RegisterUsersPage()));
+
+                          Navigator.pushAndRemoveUntil(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => RegisterUsersPage()),
+                            (Route<dynamic> route) => false,
+                          );
                         }
                       });
                     } else if (type == "doctor") {
@@ -328,11 +348,20 @@ class _LoginPageState extends State<LoginPage> {
                             textColor: Colors.white,
                             fontSize: 16.0,
                           );
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      DocCancelAppointment(token: token!)));
+
+                          // Navigator.push(
+                          //     context,
+                          //     MaterialPageRoute(
+                          //         builder: (context) =>
+                          //             DocCancelAppointment(token: token!)));
+
+                          Navigator.pushAndRemoveUntil(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    DocCancelAppointment(token: token!)),
+                            (Route<dynamic> route) => false,
+                          );
                         }
                       });
                     }

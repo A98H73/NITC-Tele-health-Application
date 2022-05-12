@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:nitc_telehealth_application/FrontEnd/screens/Login_Page.dart';
 import 'package:snippet_coder_utils/hex_color.dart';
 
 class RegisterUsersPage extends StatefulWidget {
@@ -18,14 +19,20 @@ class _RegisterUsersPageState extends State<RegisterUsersPage> {
         child: ListView(
           // Important: Remove any padding from the ListView.
           padding: EdgeInsets.zero,
+
           children: [
             const DrawerHeader(
               decoration: BoxDecoration(
-                color: Color.fromARGB(255, 0, 34, 62),
-              ),
+                  color: Colors.white,
+                  image: DecorationImage(
+                    image: AssetImage("assets/images/NITC_logo.jpg"),
+                  )),
               child: Text(
-                'Drawer Header',
-                style: TextStyle(color: Colors.white),
+                '',
+                style: TextStyle(
+                  color: Colors.orange,
+                  fontSize: 30,
+                ),
               ),
             ),
             ListTile(
@@ -40,12 +47,6 @@ class _RegisterUsersPageState extends State<RegisterUsersPage> {
                 Navigator.pushNamed(context, "/printcerti");
               },
             ),
-            ListTile(
-              title: const Text('Sign Out'),
-              onTap: () {
-                Navigator.pushNamed(context, "/registeruser");
-              },
-            ),
           ],
         ),
       ),
@@ -54,6 +55,18 @@ class _RegisterUsersPageState extends State<RegisterUsersPage> {
         title: Text(
           "Register User",
         ),
+        actions: [
+          IconButton(
+              onPressed: () {
+                Navigator.pushReplacement<void, void>(
+                  context,
+                  MaterialPageRoute<void>(
+                    builder: (BuildContext context) => const LoginPage(),
+                  ),
+                );
+              },
+              icon: Icon(Icons.logout)),
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.only(

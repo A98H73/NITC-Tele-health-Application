@@ -5,6 +5,8 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:nitc_telehealth_application/FrontEnd/screens/BookAppointment.dart';
+import 'package:nitc_telehealth_application/FrontEnd/screens/Login_Page.dart';
+import 'package:nitc_telehealth_application/FrontEnd/screens/PatientLeaveRequest.dart';
 import 'package:nitc_telehealth_application/FrontEnd/services/bookslot.dart';
 import 'package:snippet_coder_utils/ProgressHUD.dart';
 import 'package:snippet_coder_utils/hex_color.dart';
@@ -135,6 +137,18 @@ class _DocCancelAppointmentState extends State<DocCancelAppointment> {
             style: TextStyle(color: Colors.white),
           ),
           backgroundColor: HexColor("#283B71"),
+          actions: [
+            IconButton(
+                onPressed: () {
+                  Navigator.pushReplacement<void, void>(
+                    context,
+                    MaterialPageRoute<void>(
+                      builder: (BuildContext context) => const LoginPage(),
+                    ),
+                  );
+                },
+                icon: Icon(Icons.logout)),
+          ],
         ),
         backgroundColor: HexColor("#283B71"),
         body: ProgressHUD(
@@ -146,7 +160,37 @@ class _DocCancelAppointmentState extends State<DocCancelAppointment> {
           opacity: 0.3,
           key: UniqueKey(),
         ),
-        drawer: Drawer(backgroundColor: ),
+        drawer: Drawer(
+          child: ListView(
+            // Important: Remove any padding from the ListView.
+            padding: EdgeInsets.zero,
+            children: [
+              const DrawerHeader(
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    image: DecorationImage(
+                      image: AssetImage("assets/images/NITC_logo.jpg"),
+                    )),
+                child: Text(
+                  '',
+                  style: TextStyle(color: Colors.white),
+                ),
+              ),
+              ListTile(
+                title: const Text('Patient Leave Request'),
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => RequestMedLeave(
+                          token: widget.token,
+                        ),
+                      ));
+                },
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }
