@@ -18,7 +18,7 @@ class _RegisterDoctorState extends State<RegisterDoctor> {
   bool hidePassword = true;
   GlobalKey<FormState> globalFormKey = GlobalKey<FormState>();
   String? name;
-  String? type;
+  String? type = "doctor";
   String? college_id;
   String? spec_in;
   String? email;
@@ -120,43 +120,7 @@ class _RegisterDoctorState extends State<RegisterDoctor> {
               right: 20,
             ),
             child: TextFormField(
-              controller: TextEditingController(text: name),
-              onChanged: (value) {
-                name = value;
-              },
-              validator: (value) {
-                if (value == null) {
-                  return 'Field cannot be empty';
-                }
-              },
-              style: TextStyle(color: Colors.white),
-              decoration: InputDecoration(
-                labelText: "Name",
-                labelStyle: TextStyle(color: Colors.white),
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: const BorderRadius.all(Radius.circular(10.0)),
-                  borderSide: BorderSide(
-                    color: Colors.white,
-                  ),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10.0),
-                  borderSide: BorderSide(
-                    color: Colors.white,
-                  ),
-                ),
-              ),
-            ),
-          ),
-          SizedBox(
-            height: 10,
-          ),
-          Padding(
-            padding: const EdgeInsets.only(
-              left: 20,
-              right: 20,
-            ),
-            child: TextFormField(
+              enabled: false,
               controller: TextEditingController(text: type),
               onChanged: (value) {
                 type = value;
@@ -185,6 +149,45 @@ class _RegisterDoctorState extends State<RegisterDoctor> {
               ),
             ),
           ),
+          SizedBox(
+            height: 10,
+          ),
+
+          Padding(
+            padding: const EdgeInsets.only(
+              left: 20,
+              right: 20,
+            ),
+            child: TextFormField(
+              controller: TextEditingController(text: name),
+              onChanged: (value) {
+                name = value;
+              },
+              validator: (value) {
+                if (value == null) {
+                  return 'Field cannot be empty';
+                }
+              },
+              style: TextStyle(color: Colors.white),
+              decoration: InputDecoration(
+                labelText: "Name",
+                labelStyle: TextStyle(color: Colors.white),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: const BorderRadius.all(Radius.circular(10.0)),
+                  borderSide: BorderSide(
+                    color: Colors.white,
+                  ),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                  borderSide: BorderSide(
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ),
+          ),
+
           SizedBox(
             height: 10,
           ),

@@ -24,6 +24,22 @@ class _DeleteAdminState extends State<DeleteAdmin> {
   String? college_id;
   int? phone;
 
+  Widget _getAllTexts() {
+    if (name != null && type != null && college_id != null && phone != null) {
+      return Column(
+        children: [
+          Text('Name        = $name'),
+          Text('User Type  = $type'),
+          Text('College ID     = $college_id'),
+          Text('Phone      = $phone'),
+        ],
+      );
+    }
+    return Column(
+      children: [],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -179,14 +195,7 @@ class _DeleteAdminState extends State<DeleteAdmin> {
               height: MediaQuery.of(context).size.height / 4,
               color: Colors.white,
               child: Center(
-                child: Column(
-                  children: [
-                    Text('Name        = $name'),
-                    Text('User Type  = $type'),
-                    Text('College ID     = $college_id'),
-                    Text('Phone      = $phone'),
-                  ],
-                ),
+                child: _getAllTexts(),
               ),
             ),
           ),

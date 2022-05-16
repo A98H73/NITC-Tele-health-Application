@@ -18,7 +18,7 @@ class _RegisterAdminState extends State<RegisterAdmin> {
   bool hidePassword = true;
   GlobalKey<FormState> globalFormKey = GlobalKey<FormState>();
   String? name;
-  String? type;
+  String? type = "admin";
   String? college_id;
   String? phone;
   String? email;
@@ -99,6 +99,46 @@ class _RegisterAdminState extends State<RegisterAdmin> {
               right: 20,
             ),
             child: TextFormField(
+              enabled: false,
+              controller: TextEditingController(text: type),
+              onChanged: (value) {
+                type = value;
+              },
+              validator: (value) {
+                if (value == null) {
+                  return 'Field cannot be empty';
+                }
+              },
+              style: TextStyle(color: Colors.white),
+              decoration: InputDecoration(
+                hintText: "Enter Type",
+                hintStyle: TextStyle(color: Colors.white),
+                labelText: "Type",
+                labelStyle: TextStyle(color: Colors.white),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: const BorderRadius.all(Radius.circular(10.0)),
+                  borderSide: BorderSide(
+                    color: Colors.white,
+                  ),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                  borderSide: BorderSide(
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ),
+          ),
+          SizedBox(
+            height: 10,
+          ),
+          Padding(
+            padding: const EdgeInsets.only(
+              left: 20,
+              right: 20,
+            ),
+            child: TextFormField(
               controller: TextEditingController(text: name),
               onChanged: (value) {
                 name = value;
@@ -127,43 +167,7 @@ class _RegisterAdminState extends State<RegisterAdmin> {
               ),
             ),
           ),
-          SizedBox(
-            height: 10,
-          ),
-          Padding(
-            padding: const EdgeInsets.only(
-              left: 20,
-              right: 20,
-            ),
-            child: TextFormField(
-              controller: TextEditingController(text: type),
-              onChanged: (value) {
-                type = value;
-              },
-              validator: (value) {
-                if (value == null) {
-                  return 'Field cannot be empty';
-                }
-              },
-              style: TextStyle(color: Colors.white),
-              decoration: InputDecoration(
-                labelText: "Type",
-                labelStyle: TextStyle(color: Colors.white),
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: const BorderRadius.all(Radius.circular(10.0)),
-                  borderSide: BorderSide(
-                    color: Colors.white,
-                  ),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10.0),
-                  borderSide: BorderSide(
-                    color: Colors.white,
-                  ),
-                ),
-              ),
-            ),
-          ),
+
           SizedBox(
             height: 10,
           ),

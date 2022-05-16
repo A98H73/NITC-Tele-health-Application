@@ -18,7 +18,7 @@ class _RegisterUserState extends State<RegisterUser> {
   bool hidePassword = true;
   GlobalKey<FormState> globalFormKey = GlobalKey<FormState>();
   String? name;
-  String? type;
+  String? type = "user";
   String? branch;
   String? rollno;
   String? email;
@@ -99,50 +99,7 @@ class _RegisterUserState extends State<RegisterUser> {
               right: 20,
             ),
             child: TextFormField(
-              controller: TextEditingController(text: name),
-              onChanged: (value) {
-                name = value;
-              },
-              validator: (value) {
-                if (value == null) {
-                  return 'Field cannot be empty';
-                }
-              },
-              style: TextStyle(color: Colors.white),
-              decoration: InputDecoration(
-                hintText: "Enter Name",
-                hintStyle: TextStyle(color: Colors.white),
-                labelText: "Name",
-                labelStyle: TextStyle(color: Colors.white),
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: const BorderRadius.all(Radius.circular(10.0)),
-                  borderSide: BorderSide(
-                    color: Colors.white,
-                  ),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10.0),
-                  borderSide: BorderSide(
-                    color: Colors.white,
-                  ),
-                ),
-                prefixIcon: Icon(
-                  Icons.person,
-                  color: Colors.white,
-                ),
-                prefixIconColor: Colors.white,
-              ),
-            ),
-          ),
-          SizedBox(
-            height: 10,
-          ),
-          Padding(
-            padding: const EdgeInsets.only(
-              left: 20,
-              right: 20,
-            ),
-            child: TextFormField(
+              enabled: false,
               controller: TextEditingController(text: type),
               onChanged: (value) {
                 type = value;
@@ -170,14 +127,49 @@ class _RegisterUserState extends State<RegisterUser> {
                     color: Colors.white,
                   ),
                 ),
-                prefixIcon: Icon(
-                  Icons.person,
-                  color: Colors.white,
-                ),
-                prefixIconColor: Colors.white,
               ),
             ),
           ),
+          SizedBox(
+            height: 10,
+          ),
+          Padding(
+            padding: const EdgeInsets.only(
+              left: 20,
+              right: 20,
+            ),
+            child: TextFormField(
+              controller: TextEditingController(text: name),
+              onChanged: (value) {
+                name = value;
+              },
+              validator: (value) {
+                if (value == null) {
+                  return 'Field cannot be empty';
+                }
+              },
+              style: TextStyle(color: Colors.white),
+              decoration: InputDecoration(
+                hintText: "Enter Name",
+                hintStyle: TextStyle(color: Colors.white),
+                labelText: "Name",
+                labelStyle: TextStyle(color: Colors.white),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: const BorderRadius.all(Radius.circular(10.0)),
+                  borderSide: BorderSide(
+                    color: Colors.white,
+                  ),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                  borderSide: BorderSide(
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ),
+          ),
+
           SizedBox(
             height: 10,
           ),
@@ -214,11 +206,6 @@ class _RegisterUserState extends State<RegisterUser> {
                     color: Colors.white,
                   ),
                 ),
-                prefixIcon: Icon(
-                  Icons.person,
-                  color: Colors.white,
-                ),
-                prefixIconColor: Colors.white,
               ),
             ),
           ),
@@ -258,11 +245,6 @@ class _RegisterUserState extends State<RegisterUser> {
                     color: Colors.white.withOpacity(0.5),
                   ),
                 ),
-                prefixIcon: Icon(
-                  Icons.person,
-                  color: Colors.white,
-                ),
-                prefixIconColor: Colors.white,
               ),
             ),
           ),

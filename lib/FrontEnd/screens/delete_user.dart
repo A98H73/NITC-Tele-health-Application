@@ -43,6 +43,22 @@ class _DeleteUserState extends State<DeleteUser> {
     );
   }
 
+  Widget _getAllTexts() {
+    if (name != null && type != null && branch != null && rollno != null) {
+      return Column(
+        children: [
+          Text('Name        = $name'),
+          Text('User Type  = $type'),
+          Text('Branch     = $branch'),
+          Text('Roll No      = $rollno'),
+        ],
+      );
+    }
+    return Column(
+      children: [],
+    );
+  }
+
   Widget _deleteuserUI(BuildContext context) {
     return SingleChildScrollView(
       child: Column(
@@ -179,15 +195,9 @@ class _DeleteUserState extends State<DeleteUser> {
               width: MediaQuery.of(context).size.width,
               height: MediaQuery.of(context).size.height / 4,
               color: Colors.white,
-              child: Center(
-                child: Column(
-                  children: [
-                    Text('Name        = $name'),
-                    Text('User Type  = $type'),
-                    Text('Branch     = $branch'),
-                    Text('Roll No      = $rollno'),
-                  ],
-                ),
+              child: Align(
+                alignment: Alignment.center,
+                child: _getAllTexts(),
               ),
             ),
           ),

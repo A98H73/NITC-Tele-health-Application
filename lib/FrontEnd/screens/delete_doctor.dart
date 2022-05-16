@@ -42,6 +42,22 @@ class _DeleteDoctorState extends State<DeleteDoctor> {
     );
   }
 
+  Widget _getAllTexts() {
+    if (name != null && type != null && college_id != null && spec_in != null) {
+      return Column(
+        children: [
+          Text('Name        = $name'),
+          Text('User Type  = $type'),
+          Text('Specilist In     = $spec_in'),
+          Text('College ID      = $college_id'),
+        ],
+      );
+    }
+    return Column(
+      children: [],
+    );
+  }
+
   Widget _deletedoctorUI(BuildContext context) {
     return SingleChildScrollView(
       child: Column(
@@ -179,14 +195,7 @@ class _DeleteDoctorState extends State<DeleteDoctor> {
               height: MediaQuery.of(context).size.height / 4,
               color: Colors.white,
               child: Center(
-                child: Column(
-                  children: [
-                    Text('Name        = $name'),
-                    Text('User Type  = $type'),
-                    Text('Specilist In     = $spec_in'),
-                    Text('College ID      = $college_id'),
-                  ],
-                ),
+                child: _getAllTexts(),
               ),
             ),
           ),
