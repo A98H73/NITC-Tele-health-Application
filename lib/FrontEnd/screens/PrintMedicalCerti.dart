@@ -1,10 +1,14 @@
+// import 'dart:html';
+import 'dart:typed_data';
 import 'dart:ui';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:nitc_telehealth_application/FrontEnd/services/addMedLeave.dart';
 import 'package:nitc_telehealth_application/FrontEnd/services/createSchedule.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:snippet_coder_utils/ProgressHUD.dart';
 import 'package:snippet_coder_utils/hex_color.dart';
 import 'package:date_format/date_format.dart';
@@ -34,6 +38,32 @@ class _PrintMedicalCertificateState extends State<PrintMedicalCertificate> {
   bool? doc_isaccepted;
   bool admin_isaccepted = false;
   bool _selectSlotValue = false;
+
+  String url =
+      "https://res.cloudinary.com/dn4afcjrb/image/upload/v1652766730/print_pdf_zn2drj.jpg";
+
+  _saveFile() async {
+    var status = await Permission.storage.request();
+
+    if (status.isGranted) {
+      var response = await Dio()
+          .get(url, options: Options(responseType: ResponseType.bytes));
+      final result = await ImageGallerySaver.saveImage(
+          Uint8List.fromList(response.data),
+          quality: 60,
+          name: "Mediical_Certificate");
+      Fluttertoast.showToast(
+        msg: "Certificate stored in Device",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.CENTER,
+        timeInSecForIosWeb: 4,
+        backgroundColor: Colors.green,
+        textColor: Colors.white,
+        fontSize: 16.0,
+      );
+      print(result);
+    }
+  }
 
   Future<List<UserValue>>? _futureData;
 
@@ -65,11 +95,11 @@ class _PrintMedicalCertificateState extends State<PrintMedicalCertificate> {
       for (var u in str) {
         UserValue usr = new UserValue(
             u['_id'],
-            u['doc_name'],
             u['doc_email'],
+            u['doc_name'],
             u['doc_spec_in'],
-            u['user_name'],
             u['user_email'],
+            u['user_name'],
             u['user_rollno'],
             u['user_branch'],
             u['doc_isaccepted'],
@@ -357,11 +387,11 @@ class _PrintMedicalCertificateState extends State<PrintMedicalCertificate> {
                               //tileColor: bgcolor,
                               onTap: () {
                                 _id = snapshot.data[index]._id;
-                                doc_email = snapshot.data[index].doc_email;
+                                //doc_email = snapshot.data[index].doc_email;
                                 doc_name = snapshot.data[index].doc_name;
                                 doc_spec_in = snapshot.data[index].doc_spec_in;
                                 user_name = snapshot.data[index].user_name;
-                                user_email = snapshot.data[index].user_email;
+                                //user_email = snapshot.data[index].user_email;
                                 user_branch = snapshot.data[index].user_branch;
                                 user_rollno = snapshot.data[index].user_rollno;
                                 doc_isaccepted =
@@ -383,7 +413,7 @@ class _PrintMedicalCertificateState extends State<PrintMedicalCertificate> {
                           child: Padding(
                             padding: const EdgeInsets.only(left: 20, right: 20),
                             child: Text(
-                                "Appointments are not being created for this day yet...."),
+                                "Appointments are not present for this user...."),
                           ),
                         ),
                       );
@@ -503,6 +533,7 @@ class _PrintMedicalCertificateState extends State<PrintMedicalCertificate> {
                                 textColor: Colors.white,
                                 fontSize: 16.0,
                               );
+                              _saveFile();
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
