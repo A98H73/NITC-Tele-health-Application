@@ -9,7 +9,6 @@ import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:nitc_telehealth_application/FrontEnd/services/addMedLeave.dart';
 import 'package:nitc_telehealth_application/FrontEnd/services/createSchedule.dart';
-import 'package:nitc_telehealth_application/FrontEnd/services/pdf_invoice_api.dart';
 import 'package:open_file/open_file.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:snippet_coder_utils/ProgressHUD.dart';
@@ -42,7 +41,7 @@ class _PrintMedicalCertificateState extends State<PrintMedicalCertificate> {
   String? user_rollno;
   String? user_branch;
   bool? doc_isaccepted;
-  String? suffer;
+  String? issue_face;
   bool admin_isaccepted = false;
   bool _selectSlotValue = false;
   String? _setStartDate;
@@ -118,7 +117,7 @@ class _PrintMedicalCertificateState extends State<PrintMedicalCertificate> {
                 child: pw.Text(
                     "I, Dr $doc_name after careful personal examination of the case \n \n"
                     "hereby, certyfy that $user_name whore signature is given above is \n\n"
-                    "suffering from $suffer \n\n "
+                    "suffering from $issue_face \n\n "
                     "$user_name was admitted to hospital /was not in a condition to write the\n\n"
                     "Examination/attend class during the period from ${_setStartDate} to ${_setEndDate}\n\n"),
               ),
@@ -164,7 +163,7 @@ class _PrintMedicalCertificateState extends State<PrintMedicalCertificate> {
                 height: 10,
               ),
               pw.Align(
-                alignment: pw.Alignment.centerLeft,
+                alignment: pw.Alignment.centerRight,
                 child: pw.Text("Signature:"),
               ),
               pw.SizedBox(
@@ -288,6 +287,7 @@ class _PrintMedicalCertificateState extends State<PrintMedicalCertificate> {
             u['user_name'],
             u['user_rollno'],
             u['user_branch'],
+            u['issue_face'],
             u['doc_isaccepted'],
             u['admin_isaccepted']);
 
@@ -557,6 +557,12 @@ class _PrintMedicalCertificateState extends State<PrintMedicalCertificate> {
                                     ),
                                   ),
                                   Text(
+                                    "Suffering From: ${snapshot.data[index].issue_face}",
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  Text(
                                     "Doctor Accepted: ${snapshot.data[index].doc_isaccepted}",
                                     style: TextStyle(
                                       fontWeight: FontWeight.bold,
@@ -580,6 +586,7 @@ class _PrintMedicalCertificateState extends State<PrintMedicalCertificate> {
                                 //user_email = snapshot.data[index].user_email;
                                 user_branch = snapshot.data[index].user_branch;
                                 user_rollno = snapshot.data[index].user_rollno;
+                                issue_face = snapshot.data[index].issue_face;
                                 doc_isaccepted =
                                     snapshot.data[index].doc_isaccepted;
                                 print(
@@ -638,42 +645,6 @@ class _PrintMedicalCertificateState extends State<PrintMedicalCertificate> {
                 ),
               ),
             )),
-
-          Padding(
-            padding: const EdgeInsets.only(
-              top: 20,
-              left: 20,
-              right: 20,
-            ),
-            child: TextFormField(
-              controller: TextEditingController(text: suffer),
-              onChanged: (value) {
-                suffer = value;
-              },
-              validator: (value) {
-                if (value == null) {
-                  return 'Field cannot be empty';
-                }
-              },
-              style: TextStyle(color: Colors.white),
-              decoration: InputDecoration(
-                hintText: "Issue Facing",
-                hintStyle: TextStyle(color: Colors.white),
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: const BorderRadius.all(Radius.circular(10.0)),
-                  borderSide: BorderSide(
-                    color: Colors.white,
-                  ),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10.0),
-                  borderSide: BorderSide(
-                    color: Colors.white,
-                  ),
-                ),
-              ),
-            ),
-          ),
 
           Padding(
             padding: const EdgeInsets.only(
@@ -835,6 +806,7 @@ class _PrintMedicalCertificateState extends State<PrintMedicalCertificate> {
                                   user_email,
                                   user_rollno,
                                   user_branch,
+                                  issue_face,
                                   doc_isaccepted,
                                   admin_isaccepted)
                               .then((val) {
@@ -967,6 +939,7 @@ class UserValue {
   final String? user_email;
   final String? user_rollno;
   final String? user_branch;
+  final String? issue_face;
   final bool doc_isaccepted;
   final bool admin_isaccepted;
 
@@ -979,6 +952,7 @@ class UserValue {
       this.user_name,
       this.user_branch,
       this.user_rollno,
+      this.issue_face,
       this.doc_isaccepted,
       this.admin_isaccepted);
 }

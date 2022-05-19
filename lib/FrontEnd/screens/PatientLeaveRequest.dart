@@ -30,6 +30,7 @@ class _RequestMedLeaveState extends State<RequestMedLeave> {
   String? user_email;
   String? user_rollno;
   String? user_branch;
+  String? issue_face;
   bool doc_isaccepted = false;
   bool admin_isaccepted = false;
 
@@ -255,6 +256,41 @@ class _RequestMedLeaveState extends State<RequestMedLeave> {
           Padding(
             padding: const EdgeInsets.only(
               top: 20,
+              left: 20,
+              right: 20,
+            ),
+            child: TextFormField(
+              controller: TextEditingController(text: issue_face),
+              onChanged: (value) {
+                issue_face = value;
+              },
+              validator: (value) {
+                if (value == null) {
+                  return 'Field cannot be empty';
+                }
+              },
+              style: TextStyle(color: Colors.white),
+              decoration: InputDecoration(
+                labelText: "Issue Facing",
+                labelStyle: TextStyle(color: Colors.white),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: const BorderRadius.all(Radius.circular(10.0)),
+                  borderSide: BorderSide(
+                    color: Colors.white,
+                  ),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                  borderSide: BorderSide(
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(
+              top: 20,
               left: 30,
               right: 30,
             ),
@@ -302,6 +338,7 @@ class _RequestMedLeaveState extends State<RequestMedLeave> {
                     print(user_name);
                     print(user_branch);
                     print(user_rollno);
+                    print(issue_face);
                     print(doc_isaccepted);
                     print(admin_isaccepted);
                     MedicalLeaveReq()
@@ -313,6 +350,7 @@ class _RequestMedLeaveState extends State<RequestMedLeave> {
                             user_email,
                             user_rollno,
                             user_branch,
+                            issue_face,
                             doc_isaccepted,
                             admin_isaccepted)
                         .then((val) {

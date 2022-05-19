@@ -5,8 +5,17 @@ import 'package:fluttertoast/fluttertoast.dart';
 class MedicalLeaveReq {
   Dio dio = new Dio();
 
-  AddMedLeave(doc_email, doc_name, doc_spec_in, user_name, user_email,
-      user_rollno, user_branch, doc_isaccepted, admin_isaccepted) async {
+  AddMedLeave(
+      doc_email,
+      doc_name,
+      doc_spec_in,
+      user_name,
+      user_email,
+      user_rollno,
+      user_branch,
+      issue_face,
+      doc_isaccepted,
+      admin_isaccepted) async {
     try {
       return await dio.post(
         'https://nitc-tele-health-app.herokuapp.com/medleave',
@@ -18,6 +27,7 @@ class MedicalLeaveReq {
           "user_email": user_email,
           "user_branch": user_branch,
           "user_rollno": user_rollno,
+          "issue_face": issue_face,
           "doc_isaccepted": doc_isaccepted,
           "admin_isaccepted": admin_isaccepted
         },
@@ -35,8 +45,18 @@ class MedicalLeaveReq {
     }
   }
 
-  updateMedRequest(_id, doc_name, doc_email, doc_spec_in, user_name, user_email,
-      user_rollno, user_branch, doc_isaccepted, admin_isaccepted) async {
+  updateMedRequest(
+      _id,
+      doc_name,
+      doc_email,
+      doc_spec_in,
+      user_name,
+      user_email,
+      user_rollno,
+      user_branch,
+      issue_face,
+      doc_isaccepted,
+      admin_isaccepted) async {
     try {
       return await dio.put(
         'https://nitc-tele-health-app.herokuapp.com/updatemedrequest/$_id',
@@ -48,6 +68,7 @@ class MedicalLeaveReq {
           "user_email": user_email,
           "user_branch": user_branch,
           "user_rollno": user_rollno,
+          "issue_face": issue_face,
           "doc_isaccepted": doc_isaccepted,
           "admin_isaccepted": admin_isaccepted
         },

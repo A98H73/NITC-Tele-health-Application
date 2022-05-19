@@ -155,23 +155,29 @@ class _BookAppNowState extends State<BookAppNow> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text(
-            "Book An Appointment",
-            style: TextStyle(color: Colors.white),
+      child: WillPopScope(
+        onWillPop: () async {
+          Navigator.pop(context);
+          return false;
+        },
+        child: Scaffold(
+          appBar: AppBar(
+            title: Text(
+              "Book An Appointment",
+              style: TextStyle(color: Colors.white),
+            ),
+            backgroundColor: HexColor("#283B71"),
           ),
           backgroundColor: HexColor("#283B71"),
-        ),
-        backgroundColor: HexColor("#283B71"),
-        body: ProgressHUD(
-          child: Form(
-            key: globalFormKey,
-            child: _appointmentUI(context),
+          body: ProgressHUD(
+            child: Form(
+              key: globalFormKey,
+              child: _appointmentUI(context),
+            ),
+            inAsyncCall: isAPICallProcess,
+            opacity: 0.3,
+            key: UniqueKey(),
           ),
-          inAsyncCall: isAPICallProcess,
-          opacity: 0.3,
-          key: UniqueKey(),
         ),
       ),
     );
