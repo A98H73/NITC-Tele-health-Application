@@ -116,7 +116,7 @@ class _PrintMedicalCertificateState extends State<PrintMedicalCertificate> {
                 alignment: pw.Alignment.center,
                 child: pw.Text(
                     "I, Dr $doc_name after careful personal examination of the case \n \n"
-                    "hereby, certyfy that $user_name whore signature is given above is \n\n"
+                    "hereby, certify that $user_name whore signature is given above is \n\n"
                     "suffering from $issue_face \n\n "
                     "$user_name was admitted to hospital /was not in a condition to write the\n\n"
                     "Examination/attend class during the period from ${_setStartDate} to ${_setEndDate}\n\n"),
