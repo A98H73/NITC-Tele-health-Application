@@ -1,4 +1,5 @@
 // import 'dart:html';
+import 'dart:io';
 import 'dart:typed_data';
 import 'dart:ui';
 import 'package:dio/dio.dart';
@@ -8,12 +9,17 @@ import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:nitc_telehealth_application/FrontEnd/services/addMedLeave.dart';
 import 'package:nitc_telehealth_application/FrontEnd/services/createSchedule.dart';
+import 'package:nitc_telehealth_application/FrontEnd/services/pdf_invoice_api.dart';
+import 'package:open_file/open_file.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:snippet_coder_utils/ProgressHUD.dart';
 import 'package:snippet_coder_utils/hex_color.dart';
 import 'package:date_format/date_format.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:intl/intl.dart';
+import 'package:pdf/pdf.dart';
+import 'package:pdf/widgets.dart' as pw;
+import 'package:path_provider/path_provider.dart';
 
 class PrintMedicalCertificate extends StatefulWidget {
   const PrintMedicalCertificate({Key? key}) : super(key: key);
@@ -36,8 +42,188 @@ class _PrintMedicalCertificateState extends State<PrintMedicalCertificate> {
   String? user_rollno;
   String? user_branch;
   bool? doc_isaccepted;
+  String? suffer;
   bool admin_isaccepted = false;
   bool _selectSlotValue = false;
+  String? _setStartDate;
+  String? _setEndDate;
+
+  DateTime selectedDate = DateTime.now();
+
+  TextEditingController _startDateController = TextEditingController();
+  TextEditingController _endDateController = TextEditingController();
+
+  Future<String> _selectStartDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+        context: context,
+        initialDate: selectedDate,
+        initialDatePickerMode: DatePickerMode.day,
+        firstDate: DateTime(2015),
+        lastDate: DateTime(2101));
+    if (picked != null)
+      setState(() {
+        selectedDate = picked;
+        _startDateController.text = DateFormat.yMd().format(selectedDate);
+        _setStartDate = _startDateController.text;
+        //print("value of: " + _dateController.text);
+      });
+    return _startDateController.text;
+  }
+
+  Future<String> _selectEndDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+        context: context,
+        initialDate: selectedDate,
+        initialDatePickerMode: DatePickerMode.day,
+        firstDate: DateTime(2015),
+        lastDate: DateTime(2101));
+    if (picked != null)
+      setState(() {
+        selectedDate = picked;
+        _endDateController.text = DateFormat.yMd().format(selectedDate);
+        _setEndDate = _endDateController.text;
+        //print("value of: " + _dateController.text);
+      });
+    return _endDateController.text;
+  }
+
+  String str = "";
+
+  static Future openFiles(File file) async {
+    final upath = file.path;
+    print("Path to pdf is: $upath");
+    await OpenFile.open(upath);
+  }
+
+  void _printPDF() async {
+    final pdfFile = pw.Document();
+
+    pdfFile.addPage(pw.MultiPage(
+        pageFormat: PdfPageFormat.a4,
+        build: (pw.Context context) => [
+              pw.Center(
+                child: pw.Text("MEDICAL CERTIFICATE FOR STUDENT",
+                    style: pw.TextStyle(
+                        fontSize: 15, fontWeight: pw.FontWeight.bold)),
+              ),
+              pw.SizedBox(
+                height: 10,
+              ),
+              pw.Align(
+                alignment: pw.Alignment.centerRight,
+                child: pw.Text("Signature"),
+              ),
+              pw.Align(
+                alignment: pw.Alignment.center,
+                child: pw.Text(
+                    "I, Dr $doc_name after careful personal examination of the case \n \n"
+                    "hereby, certyfy that $user_name whore signature is given above is \n\n"
+                    "suffering from $suffer \n\n "
+                    "$user_name was admitted to hospital /was not in a condition to write the\n\n"
+                    "Examination/attend class during the period from ${_setStartDate} to ${_setEndDate}\n\n"),
+              ),
+              pw.SizedBox(
+                height: 10,
+              ),
+              pw.Align(
+                alignment: pw.Alignment.centerRight,
+                child: pw.Text("MEDICAL OFFICER"),
+              ),
+              pw.SizedBox(
+                height: 10,
+              ),
+              pw.Align(
+                alignment: pw.Alignment.centerRight,
+                child: pw.Text(
+                    "Seal                                     Signature"),
+              ),
+              pw.SizedBox(
+                height: 10,
+              ),
+              pw.Align(
+                alignment: pw.Alignment.centerLeft,
+                child: pw.Text("Station:"),
+              ),
+              pw.SizedBox(
+                height: 10,
+              ),
+              pw.Align(
+                alignment: pw.Alignment.center,
+                child: pw.Text(
+                    "___________________________________________________________"),
+              ),
+              pw.SizedBox(
+                height: 20,
+              ),
+              pw.Center(
+                child: pw.Text("CERTIFICATE OF MEDICAL FITNESS FOR STUDENT",
+                    style: pw.TextStyle(
+                        fontSize: 15, fontWeight: pw.FontWeight.bold)),
+              ),
+              pw.SizedBox(
+                height: 10,
+              ),
+              pw.Align(
+                alignment: pw.Alignment.centerLeft,
+                child: pw.Text("Signature:"),
+              ),
+              pw.SizedBox(
+                height: 20,
+              ),
+              pw.Align(
+                alignment: pw.Alignment.centerLeft,
+                child: pw.Text(
+                    "I, Dr. ................................. do hereby certify that, I have carefully examined Sri/Smt.\n\n"
+                    "......................................... of the ..................... whose signature is give above and find\n\n"
+                    "that he/she has recovered from his/her illness and now fit to resume his/her academic work"),
+              ),
+              pw.SizedBox(
+                height: 20,
+              ),
+              pw.Align(
+                alignment: pw.Alignment.centerLeft,
+                child: pw.Text(
+                    "I also certify that before before arriving at this decision I have examined the original\n\n"
+                    "medical certificate(s) andstatement(s) of the case (or certified copies thereof on which \n\n)"
+                    "leave was granted or extended and have taken these into consideration in arriving at my decision."),
+              ),
+              pw.SizedBox(
+                height: 10,
+              ),
+              pw.Align(
+                alignment: pw.Alignment.centerRight,
+                child: pw.Text("MEDICAL OFFICER"),
+              ),
+              pw.SizedBox(
+                height: 10,
+              ),
+              pw.Align(
+                alignment: pw.Alignment.centerRight,
+                child: pw.Text(
+                    "Seal                                     Signature"),
+              ),
+              pw.SizedBox(
+                height: 10,
+              ),
+              pw.Align(
+                alignment: pw.Alignment.centerLeft,
+                child: pw.Text("Station:"),
+              ),
+              pw.SizedBox(
+                height: 10,
+              ),
+            ]));
+
+    var status = await Permission.storage.request();
+    if (status.isGranted) {
+      final output = await getTemporaryDirectory();
+      final file = File("${output.path}/example.pdf");
+      //final file = File('example.pdf');
+      await file.writeAsBytes(await pdfFile.save());
+
+      openFiles(file);
+    }
+  }
 
   String url =
       "https://res.cloudinary.com/dn4afcjrb/image/upload/v1652766730/print_pdf_zn2drj.jpg";
@@ -456,6 +642,136 @@ class _PrintMedicalCertificateState extends State<PrintMedicalCertificate> {
           Padding(
             padding: const EdgeInsets.only(
               top: 20,
+              left: 20,
+              right: 20,
+            ),
+            child: TextFormField(
+              controller: TextEditingController(text: suffer),
+              onChanged: (value) {
+                suffer = value;
+              },
+              validator: (value) {
+                if (value == null) {
+                  return 'Field cannot be empty';
+                }
+              },
+              style: TextStyle(color: Colors.white),
+              decoration: InputDecoration(
+                hintText: "Issue Facing",
+                hintStyle: TextStyle(color: Colors.white),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: const BorderRadius.all(Radius.circular(10.0)),
+                  borderSide: BorderSide(
+                    color: Colors.white,
+                  ),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                  borderSide: BorderSide(
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ),
+          ),
+
+          Padding(
+            padding: const EdgeInsets.only(
+              top: 20,
+              left: 20,
+              right: 20,
+            ),
+            child: InkWell(
+              customBorder: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                  side: BorderSide(color: Colors.red)),
+              onTap: () {
+                _selectStartDate(context);
+                //_setStartDate = _dateController.text;
+              },
+              child: Container(
+                height: 60,
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                    border: Border.all(
+                      color: Colors.white,
+                    ),
+                    borderRadius: BorderRadius.all(Radius.circular(10))),
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 10.0, right: 10.0),
+                  child: TextFormField(
+                    textAlign: TextAlign.left,
+                    enabled: false,
+                    keyboardType: TextInputType.text,
+                    controller: _startDateController,
+                    onChanged: (value) {
+                      _setStartDate = _startDateController.text;
+                    },
+                    decoration: InputDecoration(
+                      hintText: "Start Date",
+                      hintStyle: TextStyle(color: Colors.white),
+                      icon: Icon(
+                        Icons.date_range,
+                        size: 25.0,
+                        color: Colors.white,
+                      ),
+                    ),
+                    style: TextStyle(fontSize: 15, color: Colors.white),
+                  ),
+                ),
+              ),
+            ),
+          ),
+
+          Padding(
+            padding: const EdgeInsets.only(
+              top: 20,
+              left: 20,
+              right: 20,
+            ),
+            child: InkWell(
+              customBorder: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                  side: BorderSide(color: Colors.red)),
+              onTap: () {
+                _selectEndDate(context);
+              },
+              child: Container(
+                height: 60,
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                    border: Border.all(
+                      color: Colors.white,
+                    ),
+                    borderRadius: BorderRadius.all(Radius.circular(10))),
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 10.0, right: 10.0),
+                  child: TextFormField(
+                    textAlign: TextAlign.left,
+                    enabled: false,
+                    keyboardType: TextInputType.text,
+                    controller: _endDateController,
+                    onChanged: (value) {
+                      _setEndDate = _endDateController.text;
+                    },
+                    decoration: InputDecoration(
+                      hintText: "End Date",
+                      hintStyle: TextStyle(color: Colors.white),
+                      icon: Icon(
+                        Icons.date_range,
+                        size: 25.0,
+                        color: Colors.white,
+                      ),
+                    ),
+                    style: TextStyle(fontSize: 15, color: Colors.white),
+                  ),
+                ),
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(
+              top: 20,
               left: 30,
               right: 30,
             ),
@@ -533,7 +849,8 @@ class _PrintMedicalCertificateState extends State<PrintMedicalCertificate> {
                                 textColor: Colors.white,
                                 fontSize: 16.0,
                               );
-                              _saveFile();
+                              _printPDF();
+                              //_saveFile();
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
