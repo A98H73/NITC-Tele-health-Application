@@ -2,6 +2,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
+import 'package:nitc_telehealth_application/FrontEnd/services/RemoveData.dart';
 import 'package:nitc_telehealth_application/FrontEnd/services/addMedLeave.dart';
 import 'package:nitc_telehealth_application/FrontEnd/services/adduser.dart';
 import 'package:snippet_coder_utils/FormHelper.dart';
@@ -114,41 +115,6 @@ class _RequestMedLeaveState extends State<RequestMedLeave> {
               right: 20,
             ),
             child: TextFormField(
-              controller: TextEditingController(text: user_name),
-              onChanged: (value) {
-                user_name = value;
-              },
-              validator: (value) {
-                if (value == null) {
-                  return 'Field cannot be empty';
-                }
-              },
-              style: TextStyle(color: Colors.white),
-              decoration: InputDecoration(
-                labelText: "Enter Patient Name",
-                labelStyle: TextStyle(color: Colors.white),
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: const BorderRadius.all(Radius.circular(10.0)),
-                  borderSide: BorderSide(
-                    color: Colors.white,
-                  ),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10.0),
-                  borderSide: BorderSide(
-                    color: Colors.white,
-                  ),
-                ),
-              ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(
-              top: 20,
-              left: 20,
-              right: 20,
-            ),
-            child: TextFormField(
               controller: TextEditingController(text: user_email),
               onChanged: (value) {
                 user_email = value;
@@ -183,6 +149,48 @@ class _RequestMedLeaveState extends State<RequestMedLeave> {
               ),
             ),
           ),
+          SizedBox(
+            height: 20,
+          ),
+          Center(
+            child: ElevatedButton(
+              child: Text("Search User"),
+              onPressed: () {
+                RemoveUser().getData(user_email).then((val) {
+                  if (val.data['success']) {
+                    Fluttertoast.showToast(
+                      msg: val.data['msg'],
+                      toastLength: Toast.LENGTH_SHORT,
+                      gravity: ToastGravity.CENTER,
+                      timeInSecForIosWeb: 4,
+                      backgroundColor: Colors.green,
+                      textColor: Colors.white,
+                      fontSize: 16.0,
+                    );
+                    user_name = val.data['name'];
+                    user_branch = val.data['branch'];
+                    user_rollno = val.data['rollno'];
+                  }
+                  print(val.data);
+                  setState(() {});
+                });
+              },
+              style: ElevatedButton.styleFrom(
+                  primary: HexColor("#283B71"),
+                  side: BorderSide(
+                    width: 1.0,
+                    color: Colors.white.withOpacity(0.7),
+                  ),
+                  shape: new RoundedRectangleBorder(
+                    borderRadius: new BorderRadius.circular(80.0),
+                  ),
+                  padding: EdgeInsets.symmetric(horizontal: 50, vertical: 20),
+                  textStyle: TextStyle(
+                    fontSize: 16,
+                    color: Colors.white,
+                  )),
+            ),
+          ),
           Padding(
             padding: const EdgeInsets.only(
               top: 20,
@@ -190,9 +198,10 @@ class _RequestMedLeaveState extends State<RequestMedLeave> {
               right: 20,
             ),
             child: TextFormField(
-              controller: TextEditingController(text: user_rollno),
+              enabled: false,
+              controller: TextEditingController(text: user_name),
               onChanged: (value) {
-                user_rollno = value;
+                user_name = value;
               },
               validator: (value) {
                 if (value == null) {
@@ -201,8 +210,8 @@ class _RequestMedLeaveState extends State<RequestMedLeave> {
               },
               style: TextStyle(color: Colors.white),
               decoration: InputDecoration(
-                labelText: "Enter Patient RollNo",
-                labelStyle: TextStyle(color: Colors.white),
+                labelText: "Patient Name",
+                labelStyle: TextStyle(color: Colors.white.withOpacity(0.7)),
                 enabledBorder: OutlineInputBorder(
                   borderRadius: const BorderRadius.all(Radius.circular(10.0)),
                   borderSide: BorderSide(
@@ -225,6 +234,43 @@ class _RequestMedLeaveState extends State<RequestMedLeave> {
               right: 20,
             ),
             child: TextFormField(
+              enabled: false,
+              controller: TextEditingController(text: user_rollno),
+              onChanged: (value) {
+                user_rollno = value;
+              },
+              validator: (value) {
+                if (value == null) {
+                  return 'Field cannot be empty';
+                }
+              },
+              style: TextStyle(color: Colors.white),
+              decoration: InputDecoration(
+                labelText: "Patient RollNo",
+                labelStyle: TextStyle(color: Colors.white.withOpacity(0.7)),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: const BorderRadius.all(Radius.circular(10.0)),
+                  borderSide: BorderSide(
+                    color: Colors.white,
+                  ),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                  borderSide: BorderSide(
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(
+              top: 20,
+              left: 20,
+              right: 20,
+            ),
+            child: TextFormField(
+              enabled: false,
               controller: TextEditingController(text: user_branch),
               onChanged: (value) {
                 user_branch = value;
@@ -236,8 +282,8 @@ class _RequestMedLeaveState extends State<RequestMedLeave> {
               },
               style: TextStyle(color: Colors.white),
               decoration: InputDecoration(
-                labelText: "Enter Patient Branch",
-                labelStyle: TextStyle(color: Colors.white),
+                labelText: "Patient Branch",
+                labelStyle: TextStyle(color: Colors.white.withOpacity(0.7)),
                 enabledBorder: OutlineInputBorder(
                   borderRadius: const BorderRadius.all(Radius.circular(10.0)),
                   borderSide: BorderSide(

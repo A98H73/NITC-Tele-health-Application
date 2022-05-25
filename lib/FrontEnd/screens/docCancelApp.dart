@@ -253,34 +253,35 @@ class _DocCancelAppointmentState extends State<DocCancelAppointment> {
           ),
           Center(
             child: ElevatedButton(
-                child: Text("SHOW LIST"),
-                onPressed: () {
-                  if (globalFormKey.currentState!.validate()) {
-                    //Navigator.pushNamed(context, MyRoutings.homeRoute);
-                    setState(() {
-                      print(doc_email);
-                      print(doc_spec_in);
-                      print(date);
-                      _futureData = _getSlots();
-                    });
-                  } else {
-                    "problem signin- check";
-                  }
-                },
-                style: ElevatedButton.styleFrom(
-                    primary: HexColor("#283B71"),
-                    side: BorderSide(
-                      width: 1.0,
-                      color: Colors.white.withOpacity(0.7),
-                    ),
-                    shape: new RoundedRectangleBorder(
-                      borderRadius: new BorderRadius.circular(10.0),
-                    ),
-                    padding: EdgeInsets.symmetric(horizontal: 50, vertical: 20),
-                    textStyle: TextStyle(
-                      fontSize: 16,
-                      color: Colors.white,
-                    ))),
+              child: Text("SHOW LIST"),
+              onPressed: () {
+                if (globalFormKey.currentState!.validate()) {
+                  //Navigator.pushNamed(context, MyRoutings.homeRoute);
+                  setState(() {
+                    print(doc_email);
+                    print(doc_spec_in);
+                    print(date);
+                    _futureData = _getSlots();
+                  });
+                } else {
+                  "problem signin- check";
+                }
+              },
+              style: ElevatedButton.styleFrom(
+                  primary: HexColor("#283B71"),
+                  side: BorderSide(
+                    width: 1.0,
+                    color: Colors.white.withOpacity(0.7),
+                  ),
+                  shape: new RoundedRectangleBorder(
+                    borderRadius: new BorderRadius.circular(10.0),
+                  ),
+                  padding: EdgeInsets.symmetric(horizontal: 50, vertical: 20),
+                  textStyle: TextStyle(
+                    fontSize: 16,
+                    color: Colors.white,
+                  )),
+            ),
           ),
           Padding(
             padding: const EdgeInsets.only(
