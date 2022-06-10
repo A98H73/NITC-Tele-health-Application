@@ -216,7 +216,7 @@ class _PrintMedicalCertificateState extends State<PrintMedicalCertificate> {
     var status = await Permission.storage.request();
     if (status.isGranted) {
       final output = await getTemporaryDirectory();
-      final file = File("${output.path}/example.pdf");
+      final file = File("${output.path}/${user_name} Medical Certificate.pdf");
       //final file = File('example.pdf');
       await file.writeAsBytes(await pdfFile.save());
 

@@ -349,6 +349,13 @@ class _DocCancelAppointmentState extends State<DocCancelAppointment> {
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),
+                                  if (snapshot.data[index].app_booked == true)
+                                    Text(
+                                      "User Name: ${snapshot.data[index].user_name}",
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
                                 ],
                               ),
                               //tileColor: bgcolor,
